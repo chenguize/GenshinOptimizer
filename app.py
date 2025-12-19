@@ -138,6 +138,9 @@ app, rt = fast_app(
 
 @rt("/")
 def get():
+    # 确保主页数据同步
+    global characters
+    characters = load_characters()
     char_opts = get_character_options()
     char_opts_empty = get_character_options_with_empty()
     config_link = A("编辑配置", href="/edit_config",
@@ -148,7 +151,6 @@ def get():
                   Div(
                       H2("角色与队伍配置", cls="text-center"),
                       Form(
-                          # 修复后的网格布局：每行 2 列，防止 Label 挤压
                           Grid(
                               Div(Label("主C角色:"),
                                   Select(*[Option(f"{cid} ({elem})", value=cid) for cid, elem in char_opts],
@@ -210,7 +212,6 @@ async def post(req):
 
 @rt("/edit_config")
 def get(selected_char: str = "", saved: str = "0", new: str = "0"):
-    # 重新加载以确保同步
     current_chars = load_characters()
     char_list = list(current_chars.keys())
     is_new = new == "1"
@@ -227,7 +228,6 @@ def get(selected_char: str = "", saved: str = "0", new: str = "0"):
     current_elements = base.get("elements", [])
     alert = Div("✅ 修改已成功保存！", cls="success-alert") if saved == "1" else None
 
-    # 元素复选框
     element_fieldset = Fieldset(
         Legend("角色元素（可多选）"),
         *[Label(Input(type="checkbox", name="elements", value=e, checked=(e in current_elements)), f" {e}") for e in
@@ -237,6 +237,8 @@ def get(selected_char: str = "", saved: str = "0", new: str = "0"):
     form_content = [alert] if alert else []
     form_content += [
         H3("新建角色" if is_new else f"编辑角色：{selected_char}", cls="text-center mt-4"),
+        # 记录旧名称，用于更名时的数据迁移
+        Input(type="hidden", name="old_char_id", value=selected_char),
         Grid(
             Div(element_fieldset),
             Div(Label("基础攻击力"), Input(type="number", name="atk", value=base.get("atk", 300))),
@@ -332,9 +334,9 @@ def get(selected_char: str = "", saved: str = "0", new: str = "0"):
                              onchange="if(this.value) location.href='/edit_config?selected_char='+this.value",
                              cls="mb-4"),
                       Form(
+                          Label("角色ID (保存后将同步更新)"),
                           Input(type="text", name="char_id", value=selected_char, placeholder="角色ID（如 nahida）",
-                                required=True, readonly=not is_new,
-                                style="font-family: monospace;" if not is_new else ""),
+                                required=True, style="font-family: monospace;"),  # 去掉了 readonly
                           *form_content,
                           action="/save_config",
                           method="post"
@@ -346,15 +348,25 @@ def get(selected_char: str = "", saved: str = "0", new: str = "0"):
 @rt("/save_config", methods=["POST"])
 async def post(req):
     form_data = await req.form()
-    char_id = form_data.get("char_id", "").strip()
-    if not char_id:
+    new_char_id = form_data.get("char_id", "").strip()
+    old_char_id = form_data.get("old_char_id", "").strip()
+
+    if not new_char_id:
         return RedirectResponse("/edit_config", status_code=303)
 
-    # 重新加载当前数据
     global characters
     characters = load_characters()
 
-    data = characters.setdefault(char_id, {"base_stats": {}, "skills": {}, "buffs": []})
+    # --- 核心改名逻辑 ---
+    # 如果旧角色存在且名称发生了变化
+    if old_char_id and old_char_id in characters and old_char_id != new_char_id:
+        # 1. 拷贝旧数据到新 Key
+        characters[new_char_id] = characters[old_char_id]
+        # 2. 删除旧 Key
+        del characters[old_char_id]
+
+    # 初始化新键数据
+    data = characters.setdefault(new_char_id, {"base_stats": {}, "skills": {}, "buffs": []})
     base = data["base_stats"]
 
     # 元素多选处理
@@ -402,8 +414,10 @@ async def post(req):
         i += 1
 
     save_characters(characters)
-    # 核心修复：使用 303 状态码确保重定向使用 GET 方法
-    return RedirectResponse(f"/edit_config?selected_char={char_id}&saved=1", status_code=303)
+    # 强制同步内存数据
+    characters = load_characters()
+
+    return RedirectResponse(f"/edit_config?selected_char={new_char_id}&saved=1", status_code=303)
 
 
 serve()
