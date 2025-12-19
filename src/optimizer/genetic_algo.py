@@ -77,10 +77,9 @@ class ArtifactOptimizer:
                                 sums["dmg_bonus"] += v
                             if t == "attack_bonus" and skill_type == "NormalAttack":
                                 sums["dmg_bonus"] += v
-                                print("dmg_bonus吃到重击加成了")
                             if t == "charged_bonus" and skill_type == "ChargedAttack":
                                 sums["dmg_bonus"] += v
-                            if t == "plunging_bonus" and skill_type == "PlugingAttack":
+                            if t == "plunging_bonus" and skill_type == "PlungingAttack":
                                 sums["dmg_bonus"] += v
 
         # 2. 圣遗物单件词条

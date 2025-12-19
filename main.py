@@ -94,7 +94,7 @@ def apply_team_buffs_to_panel(target_key: str, team_data: Dict[str, Dict], chara
                 fixed_damage_bonus += v
             elif t == "charged_bonus" and skill_type == "ChargedAttack":
                 fixed_damage_bonus += v
-            elif t == "plunging_bonus" and skill_type == "PlugingAttack":
+            elif t == "plunging_bonus" and skill_type == "PlungingAttack":
                 fixed_damage_bonus += v
             else: active = False
             if active: current_logs.append(f"{type_names.get(t, t)} {format_value(t, v)}")
@@ -167,4 +167,4 @@ def run_optimizer(target_char: str, teammates: List[str], skill_type: str = "Ele
 
 if __name__ == "__main__":
     # 请根据您的实际路径修改 set_effects.json 路径
-    run_optimizer("huoshen", [ "xinuoning", "wanye"], forced_set="",skill_type="PlugingAttack",reaction="melt_cryo")
+    run_optimizer("huoshen", [ "xinuoning", "wanye"], forced_set="",skill_type="PlungingAttack",reaction="melt_cryo")
