@@ -1,95 +1,134 @@
-👑 原神全自动圣遗物遗传算法优化器 (Ultra-Detailed Guide)
-本工具是一个基于遗传算法的工业级伤害模拟器。它通过自动装配圣遗物、判定套装效果、并结合角色自身天赋 (Self-Buff) 与 队友 Buff (Team-Buff)，在数以亿计的组合中寻找全局最优解。
+原神全自动圣遗物遗传算法优化器
+超详细新手指南（Ultra-Detailed Beginner Guide）
+本工具是一个基于遗传算法的工业级伤害模拟优化器。它能自动装配你的圣遗物、准确判定套装效果、结合角色自身天赋（Self-Buff）和队友Buff（Team-Buff），在数以亿计的组合中搜索全局最优伤害面板，帮助你找到角色真正的最强配装。
+适用于追求极致输出的玩家，支持复杂队伍Buff、元素反应、减抗减防等高级计算。
 
-🛠 一、 核心逻辑与数据流
-本工具的运算核心分为两个阶段：
+一、安装与环境准备（从零开始）
 
-预处理阶段：加载角色白字，合并 Self-Buff 与 Team-Buff 形成“固定面板”。
+安装 Python
+下载 Python 3.10 或更高版本（推荐 3.12）。
+官网：https://www.python.org/downloads/
+安装时务必勾选 “Add Python to PATH”（添加到环境变量）。
 
-进化搜索阶段：遗传算法不断尝试圣遗物组合，实时计算套装加成，并通过 DamageCalculator 输出期望伤害。
+克隆或下载项目代码
+如果你有 Git：打开命令提示符（CMD），输入：textgit clone [项目仓库地址]  # （如果有GitHub/Gitee链接，请替换这里）
+或者直接从 GitHub/Gitee 下载 ZIP 包解压。
 
-二、 参数配置详解：手动调参必读
-1. main.py：实验场配置
-在 main.py 中，你需要定义当前的战斗环境。
+安装依赖库
+进入项目文件夹（用 CMD cd 到目录）。
+运行：textpip install -r requirements.txt（如果没有 requirements.txt 文件，可能依赖 numpy、scipy 等基本库，手动 pip install numpy scipy matplotlib 如有需要）
 
-target_char: 对应 characters.json 中的键名（如 "leishen"）。
+准备圣遗物数据
+项目支持自动导入游戏内圣遗物（见第三节）。
 
-skill_type (重中之重): 决定了技能倍率的取值方向及圣遗物增伤匹配。
-
-可选值: NormalAttack, ChargedAttack, ElementalSkill, ElementalBurst, PlugingAttack。
-
-reaction (元素反应):
-
-增幅类: vaporize_hydro (水蒸发), melt_pyro (火融化)。
-
-剧变/平伤类: aggravate (超激化), spread (蔓激化)。
-
-others (防御与抗性区):
-
-enemy_level: 默认 100。
-
-resistance_percent: 减抗后的敌人抗性（如 10% 初始减去 40% 翠绿 = -0.3）。
-
-2. characters.json：Self-Buff 与 技能倍率
-此文件定义角色自身的机制。
-
-base_stats: 角色 90 级 + 武器 90 级的基础白字（攻击/生命/防御）。
-
-skills: 存储不同技能类型的倍率。支持混合缩放（例如：atk_percent + em）。
-
-buffs (Self): 只作用在角色自身的buff,当角色作为计算目标是会参考。
-buffs (Team): 会作用到计算目标身上的buff。
-
-示例：龙王的 30% 水伤天赋，在此添加 { "type": "elemental_bonus", "value": 0.30, "element": "Hydro" }。
+运行方式
+推荐新手直接运行 Web 界面：textpython app.py然后打开浏览器访问：http://localhost:5001
+这里可以图形化修改参数、查看结果，非常友好！
+高级用户可直接运行：textpython main.py
 
 
-三、 圣遗物自动化导入 (YAS + Parser)
-本工具支持从游戏直接同步数据：
 
-扫描: 使用 raw/yas.exe 扫描游戏内圣遗物。
+二、核心逻辑与数据流
+工具分为两个主要阶段：
 
-生成: 得到 mona.json。
+预处理阶段
+加载角色基础属性（白字）。
+合并 Self-Buff（角色自身）和 Team-Buff（队友），形成“固定面板”。
 
-转换: 运行 parser(yas_converter).py。
+进化搜索阶段
+使用遗传算法（Genetic Algorithm）在所有圣遗物组合中进化迭代。
+实时计算套装效果 + 伤害期望（Damage Calculator）。
+最终输出伤害最高的几套配装。
 
-该脚本会将莫娜格式转化为本项目标准的 artifacts.json。
 
-注意: 转换时会保留 ID，方便你通过 ID 在游戏中定位那件“极品圣遗物”。
 
-四、 关键字段查阅字典 (基于 buff_types.md)
-如果你不确定在 set_effects.json 或 buffs 里该填什么，请务必严格遵守下表。填错一个字母都会导致该乘区失效。
+三、参数配置详解（手动调参必读）
+1. main.py：战斗环境配置
+在这里定义当前战斗场景，是最核心的文件。
 
-乘区分类	字段名 (Type)	适用场景
-基础区	atk_percent / atk_flat	攻击力加成（百分比按白字算）
-hp_percent / hp_flat	生命值加成
-em	元素精通
-增伤区	damage_bonus	全元素/全伤害加成
-elemental_bonus	对应 element 类型的元素伤害
-charged_bonus	重击专属增伤 (需匹配 ChargedAttack)
-skill_bonus	元素战技专属增伤 (需匹配 ElementalSkill)
-双暴区	crit_rate / crit_dmg	暴击率 / 暴击伤害
-特殊区	def_reduction	减防 (如雷神2命/草神2命)
-resistance_percent	减抗 (如风套/钟离)
+target_char：角色键名，对应 characters.json 中的键（如 "leishen" 表示雷神）支持中文。
+skill_type（最重要！）：决定技能倍率和增伤区匹配。
+可选值：
+NormalAttack（普攻）
+ChargedAttack（重击）
+ElementalSkill（元素战技）
+ElementalBurst（元素爆发）
+PlungingAttack（下落攻击）
 
-导出到 Google 表格
+reaction（元素反应）：
+增幅：vaporize_hydro（水蒸发）、melt_pyro（火融化）
+剧变：aggravate（超激化）、spread（蔓激化）
 
-五、 套装效果配置说明 (set_effects.json)
-本文件决定了“4件套”到底有多强。
+其他：
+enemy_level：敌人等级（默认 100）
+resistance_percent：减抗后敌人抗性（如初始 10% - 风套40% = -30% → 填 -0.3）
 
-关键点：4 件套效果中的 type 必须与 main.py 的 skill_type 逻辑闭环。
 
-例子：如果你计算的是龙王重击，而圣遗物写的是 skill_bonus，那么龙王是吃不到这部分加成的。必须写 charged_bonus 或者通用的 damage_bonus。
+2. characters.json：角色Self-Buff 与技能倍率
+定义角色机制。
 
-六、 开发者调试建议
-验证面板：运行后，观察控制台输出的 [4] 队友后固定面板。如果这里的攻击力或增伤和你手动算的对不上，请检查 team_buffs。
+base_stats：90级角色 + 90级武器基础白字（攻击/生命/防御）。
+skills：不同技能的倍率，支持混合（如 atk_percent + em）。
+buffs (Self)：仅作用于本角色的Buff。
+buffs (Team)：作用到计算目标的队友Buff。
+示例（那维莱特 30% 水伤）：JSON{ "type": "elemental_bonus", "value": 0.30, "element": "Hydro" }
 
-验证增伤：在 _calculate_panel_and_bonus 函数中，如果 p["all_damage_bonus"] 的数值异常（比如 1.0），说明圣遗物套装的 type 与 skill_type 不匹配。
+3. set_effects.json：套装效果配置
+定义4件套效果。
+关键：type 必须与 skill_type 匹配，否则吃不到加成。
+例如计算重击时，用 charged_bonus 或通用 damage_bonus，不要错写成 skill_bonus。
+4. 关键Buff类型字典（参考 buff_types.md）
+严格遵守拼写，否则乘区失效！
+| 乘区分类 | type 字段              | 适用场景                          |
+|----------|-------------------------|-----------------------------------|
+| 基础区   | atk_percent            | 攻击力百分比加成（基于白字）     |
+|          | atk_flat               | 攻击力固定值加成                  |
+|          | hp_percent             | 生命值百分比加成                  |
+|          | hp_flat                | 生命值固定值加成                  |
+|          | em                     | 元素精通                          |
+| 增伤区   | damage_bonus           | 全伤害加成（所有伤害通用）        |
+|          | elemental_bonus        | 元素伤害加成（需指定 element，如 "Hydro"） |
+|          | charged_bonus          | 重击专属增伤（需 skill_type 为 ChargedAttack） |
+|          | attack_bonus          | 重击专属增伤（需 skill_type 为 NormalAttack） |
+|          | plunging_bonus          | 重击专属增伤（需 skill_type 为 PlugingAttack） |
+|          | skill_bonus            | 元素战技专属增伤（需 skill_type 为 ElementalSkill） |
+| 双暴区   | crit_rate              | 暴击率                            |
+|          | crit_dmg               | 暴击伤害                          |
+| 特殊区   | def_reduction          | 减防（如雷神2命、草神2命）       |
+|          | resistance_reduction   | 减抗（如风套4件、钟离盾）        |
 
-算法效率：如果你圣遗物超过 1000 件，建议将 main.py 中的 population_size 调至 800 以上，以防止陷入局部最优解。
 
-重中之重：所有参数的拼写（如 PlugingAttack 还是 PlungingAttack）必须全局统一。请参考 buff_types.md 作为最终真理。
+乘区分类type 字段适用场景基础区atk_percent / atk_flat攻击力加成（百分比基于白字）hp_percent / hp_flat生命值加成em元素精通增伤区damage_bonus全伤害加成elemental_bonus元素伤害（需指定 element）charged_bonus重击专属（匹配 ChargedAttack）skill_bonus战技专属（匹配 ElementalSkill）双暴区crit_rate / crit_dmg暴击率 / 暴击伤害特殊区def_reduction减防（如雷神2命）resistance_reduction减抗（如风套、钟离）
 
-七、直接运行app.py，支持直接修改哦.一定要选这个地址
-http://localhost:5001
+四、圣遗物自动化导入（YAS + Parser）
+
+扫描游戏圣遗物
+下载 YAS 工具：https://github.com/wormtql/yas/releases
+运行 raw/yas.exe（或最新版 yas.exe）。
+游戏内打开圣遗物背包，确保分辨率 1920x1080、全屏或窗口化。
+扫描完成后生成 mona.json。
+
+转换格式
+运行项目中的 parser(yas_converter).py。
+输入 mona.json，输出本项目标准的 artifacts.json。
+优势：保留原圣遗物 ID，便于游戏内定位极品件。
+
+
+
+五、开发者调试建议
+
+验证固定面板：运行后查看控制台 “[4] 队友后固定面板”。攻击力/增伤不对？检查 team_buffs。
+验证增伤匹配：如果 all_damage_bonus 异常（如 1.0），说明套装 type 与 skill_type 不匹配。
+算法效率：圣遗物 >1000 件时，将 main.py 中 population_size 调到 800+，避免局部最优。
+拼写统一：所有关键词（如 PlungingAttack）必须一致，参考 buff_types.md。
+
+
+六、快速上手建议
+
+先用 app.py 启动 Web 界面（http://localhost:5001），图形化操作最友好。
 ![img.png](img.png)
 ![img_1.png](img_1.png)
+导入自己的 artifacts.json。
+配置 target_char 和 skill_type。
+运行优化，耐心等待（视圣遗物数量，几十秒到几分钟）。
+查看输出：最高伤害配装 + 详细面板对比。
