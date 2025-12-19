@@ -89,4 +89,7 @@ resistance_percent	减抗 (如风套/钟离)
 
 重中之重：所有参数的拼写（如 PlugingAttack 还是 PlungingAttack）必须全局统一。请参考 buff_types.md 作为最终真理。
 
-七、直接运行app.py，支持直接修改哦
+七、直接运行app.py，支持直接修改哦.一定要选这个地址
+http://localhost:5001
+![img.png](img.png)
+![img_1.png](img_1.png)
