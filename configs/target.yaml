@@ -1,0 +1,5 @@
+# 计算目标配置
+target:
+  character: Raiden Shogun
+  attack_type: elemental_burst
+  optimization_criteria: max_damage
