@@ -40,7 +40,7 @@ def apply_team_buffs_to_panel(target_key: str, team_data: Dict[str, Dict], chara
         "def_percent": "防御力%", "def_flat": "固定防御", "em": "元素精通", "crit_rate": "暴击率",
         "crit_dmg": "暴击伤害", "crit_damage": "暴击伤害", "damage_bonus": "全伤害加成",
         "elemental_bonus": "元素伤害加成", "skill_bonus": "战技伤害加成",
-        "burst_bonus": "爆发伤害加成", "def_reduction": "敌人减防", "resistance_percent": "敌人减抗"
+        "burst_bonus": "爆发伤害加成","charged_bonus": "重击伤害加成","attack_bonus": "普通统计伤害加成","plunging_bonus": "下落攻击伤害加成", "def_reduction": "敌人减防", "resistance_percent": "敌人减抗"
     }
 
     team_buff_logs = {}

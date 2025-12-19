@@ -89,8 +89,8 @@ buffs (Team)：作用到计算目标的队友Buff。
 | 增伤区   | damage_bonus           | 全伤害加成（所有伤害通用）        |
 |          | elemental_bonus        | 元素伤害加成（需指定 element，如 "Hydro"） |
 |          | charged_bonus          | 重击专属增伤（需 skill_type 为 ChargedAttack） |
-|          | attack_bonus          | 重击专属增伤（需 skill_type 为 NormalAttack） |
-|          | plunging_bonus          | 重击专属增伤（需 skill_type 为 PlugingAttack） |
+|          | attack_bonus          | 普攻专属增伤（需 skill_type 为 NormalAttack） |
+|          | plunging_bonus          | 下落攻击专属增伤（需 skill_type 为 PlugingAttack） |
 |          | skill_bonus            | 元素战技专属增伤（需 skill_type 为 ElementalSkill） |
 | 双暴区   | crit_rate              | 暴击率                            |
 |          | crit_dmg               | 暴击伤害                          |
