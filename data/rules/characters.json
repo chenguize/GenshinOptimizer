@@ -1,12 +1,14 @@
 {
   "leishen": {
     "base_stats": {
-      "elements": ["Electro"],
-      "atk": 337,
+      "elements": [
+        "Physical"
+      ],
+      "atk": 999,
       "hp": 12907,
       "def": 789,
       "crit_rate": 0.05,
-      "crit_dmg": 0.50,
+      "crit_dmg": 0.5,
       "em": 0,
       "energy_recharge_bonus": 0
     },
@@ -14,11 +16,11 @@
       "NormalAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "attack"
         }
@@ -26,11 +28,11 @@
       "ChargedAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "Charged"
         }
@@ -38,11 +40,11 @@
       "plugingAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Dendro",
           "damage_type": "pluging"
         }
@@ -50,11 +52,11 @@
       "ElementalSkill": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Electro",
           "damage_type": "Skill"
         }
@@ -62,20 +64,27 @@
       "ElementalBurst": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Electro",
           "damage_type": "Burst"
+        }
+      },
+      "PlungingAttack": {
+        "default": {
+          "multipliers": [],
+          "element": "Physical",
+          "damage_type": "Skill"
         }
       }
     },
     "buffs": [
       {
-        "type": "burst_bonus",
-        "value": 0.20,
+        "type": "elemental_bonus",
+        "value": 0.2,
         "scope": "team",
         "element": "null"
       }
@@ -83,24 +92,26 @@
   },
   "shuishen": {
     "base_stats": {
-      "elements": ["Hydro"],
+      "elements": [
+        "Hydro"
+      ],
       "atk": 337,
       "hp": 12907,
       "def": 789,
       "crit_rate": 0.05,
-      "crit_dmg": 0.50,
+      "crit_dmg": 0.5,
       "em": 0,
       "energy_recharge_bonus": 0
     },
     "skills": {
       "NormalAttack": {
         "default": {
-         "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "attack"
         }
@@ -108,11 +119,11 @@
       "ChargedAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "Charged"
         }
@@ -120,11 +131,11 @@
       "plugingAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Dendro",
           "damage_type": "pluging"
         }
@@ -132,11 +143,11 @@
       "ElementalSkill": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Skill"
         }
@@ -144,11 +155,11 @@
       "ElementalBurst": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Burst"
         }
@@ -177,12 +188,14 @@
   },
   "caoshen": {
     "base_stats": {
-      "elements": ["Dendro"],
+      "elements": [
+        "Dendro"
+      ],
       "atk": 841,
       "hp": 10361,
       "def": 630,
       "crit_rate": 0.05,
-      "crit_dmg": 0.50,
+      "crit_dmg": 0.5,
       "em": 380,
       "energy_recharge_bonus": 0
     },
@@ -190,11 +203,11 @@
       "NormalAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Dendro",
           "damage_type": "attack"
         }
@@ -202,11 +215,11 @@
       "ChargedAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Dendro",
           "damage_type": "Charged"
         }
@@ -214,36 +227,36 @@
       "plugingAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Dendro",
           "damage_type": "pluging"
         }
       },
       "ElementalSkill": {
-  "default": {
-    "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 219.3
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 219.3
+            },
+            {
+              "type": "em",
+              "value": 438.6
+            }
+          ],
+          "element": "Dendro",
+          "damage_type": "Skill"
+        }
       },
-      {
-        "type": "em",
-        "value":438.6
-      }
-    ],
-    "element": "Dendro",
-    "damage_type": "Skill"
-  }
-},
       "ElementalBurst": {
-  "default": {
-    "multipliers": []
-  }
-}
+        "default": {
+          "multipliers": []
+        }
+      }
     },
     "buffs": [
       {
@@ -271,26 +284,29 @@
         "element": "null"
       }
     ]
-  },"xinuoning": {
+  },
+  "xinuoning": {
     "base_stats": {
-      "elements": ["Geo"],
+      "elements": [
+        "Geo"
+      ],
       "atk": 337,
       "hp": 12907,
       "def": 789,
       "crit_rate": 0.05,
-      "crit_dmg": 0.50,
+      "crit_dmg": 0.5,
       "em": 0,
       "energy_recharge_bonus": 0
     },
     "skills": {
       "NormalAttack": {
         "default": {
-         "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "attack"
         }
@@ -298,11 +314,11 @@
       "ChargedAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "Charged"
         }
@@ -310,11 +326,11 @@
       "ElementalSkill": {
         "default": {
           "multipliers": [
-      {
-        "type": "def_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "def_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Geo",
           "damage_type": "Skill"
         }
@@ -322,11 +338,11 @@
       "ElementalBurst": {
         "default": {
           "multipliers": [
-      {
-        "type": "def_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "def_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Geo",
           "damage_type": "Burst"
         }
@@ -361,12 +377,14 @@
   },
   "dulin": {
     "base_stats": {
-      "elements": ["Pyro"],
+      "elements": [
+        "Pyro"
+      ],
       "atk": 337,
       "hp": 12907,
       "def": 789,
       "crit_rate": 0.05,
-      "crit_dmg": 0.50,
+      "crit_dmg": 0.5,
       "em": 0,
       "energy_recharge_bonus": 0
     },
@@ -374,11 +392,11 @@
       "NormalAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "attack"
         }
@@ -386,11 +404,11 @@
       "ChargedAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.2
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Pyro",
           "damage_type": "Charged"
         }
@@ -398,11 +416,11 @@
       "ElementalSkill": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Pyro",
           "damage_type": "Skill"
         }
@@ -410,11 +428,11 @@
       "ElementalBurst": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Pyro",
           "damage_type": "Burst"
         }
@@ -445,29 +463,30 @@
         "scope": "team",
         "element": "null"
       }
-
     ]
   },
   "longwang": {
     "base_stats": {
-      "elements": ["Hydro"],
+      "elements": [
+        "Hydro"
+      ],
       "atk": 774,
       "hp": 15217,
       "def": 597,
       "crit_rate": 0.05,
-      "crit_dmg": 0.50,
+      "crit_dmg": 0.5,
       "em": 0,
       "energy_recharge_bonus": 0
     },
     "skills": {
       "NormalAttack": {
         "default": {
-         "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "attack"
         }
@@ -475,11 +494,11 @@
       "ChargedAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 17.53
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 17.53
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Charged"
         }
@@ -487,11 +506,11 @@
       "plugingAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Dendro",
           "damage_type": "pluging"
         }
@@ -499,11 +518,11 @@
       "ElementalSkill": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Skill"
         }
@@ -511,11 +530,11 @@
       "ElementalBurst": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Burst"
         }
@@ -550,24 +569,26 @@
   },
   "wanye": {
     "base_stats": {
-      "elements": ["Anemo"],
+      "elements": [
+        "Anemo"
+      ],
       "atk": 774,
       "hp": 15217,
       "def": 597,
       "crit_rate": 0.05,
-      "crit_dmg": 0.50,
+      "crit_dmg": 0.5,
       "em": 0,
       "energy_recharge_bonus": 0
     },
     "skills": {
       "NormalAttack": {
         "default": {
-         "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "attack"
         }
@@ -575,11 +596,11 @@
       "ChargedAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 17.53
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 17.53
+            }
+          ],
           "element": "Physical",
           "damage_type": "Charged"
         }
@@ -587,11 +608,11 @@
       "PlugingAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Dendro",
           "damage_type": "pluging"
         }
@@ -599,11 +620,11 @@
       "ElementalSkill": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Skill"
         }
@@ -611,11 +632,11 @@
       "ElementalBurst": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Burst"
         }
@@ -635,26 +656,29 @@
         "element": "null"
       }
     ]
-  },"huoshen": {
+  },
+  "huoshen": {
     "base_stats": {
-      "elements": ["cryo"],
+      "elements": [
+        "cryo"
+      ],
       "atk": 1099,
       "hp": 15217,
       "def": 597,
       "crit_rate": 0.05,
-      "crit_dmg": 0.50,
+      "crit_dmg": 0.5,
       "em": 0,
       "energy_recharge_bonus": 0
     },
     "skills": {
       "NormalAttack": {
         "default": {
-         "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 0.20
-      }
-    ],
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Physical",
           "damage_type": "attack"
         }
@@ -662,11 +686,11 @@
       "ChargedAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 17.53
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 17.53
+            }
+          ],
           "element": "Physical",
           "damage_type": "Charged"
         }
@@ -674,11 +698,11 @@
       "PlugingAttack": {
         "default": {
           "multipliers": [
-      {
-        "type": "atk_percent",
-        "value": 342
-      }
-    ],
+            {
+              "type": "atk_percent",
+              "value": 342
+            }
+          ],
           "element": "Dendro",
           "damage_type": "pluging"
         }
@@ -686,11 +710,11 @@
       "ElementalSkill": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Skill"
         }
@@ -698,11 +722,11 @@
       "ElementalBurst": {
         "default": {
           "multipliers": [
-      {
-        "type": "hp_percent",
-        "value": 0.20
-      }
-    ],
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
           "element": "Hydro",
           "damage_type": "Burst"
         }
@@ -723,7 +747,7 @@
       },
       {
         "type": "atk_percent",
-        "value":6.79,
+        "value": 6.79,
         "scope": "self",
         "element": "null"
       }

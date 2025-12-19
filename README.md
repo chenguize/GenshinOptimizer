@@ -88,3 +88,5 @@ resistance_percent	减抗 (如风套/钟离)
 算法效率：如果你圣遗物超过 1000 件，建议将 main.py 中的 population_size 调至 800 以上，以防止陷入局部最优解。
 
 重中之重：所有参数的拼写（如 PlugingAttack 还是 PlungingAttack）必须全局统一。请参考 buff_types.md 作为最终真理。
+
+七、直接运行app.py，支持直接修改哦
