@@ -39,17 +39,26 @@ CONSTANTS = {
         "attack": "普通攻击伤害", "Charged": "重击伤害", "plunging": "下落攻击伤害",
         "Skill": "元素战技伤害", "Burst": "元素爆发伤害"
     },
+    # ✅ 核心修改：补全了所有细分增伤类型
     "buff_types": [
-        {"value": "damage_bonus", "label": "伤害加成"},
-        {"value": "elemental_bonus", "label": "元素伤害加成"},
-        {"value": "atk_percent", "label": "攻击力%"},
-        {"value": "hp_percent", "label": "生命值%"},
-        {"value": "crit_rate", "label": "暴击率"},
-        {"value": "crit_dmg", "label": "暴击伤害"},
-        {"value": "em", "label": "元素精通"},
-        {"value": "def_reduction", "label": "防御削弱"},
-        {"value": "resistance_percent", "label": "抗性降低"},
-        {"value": "base_multiplier_add", "label": "固定增伤"}
+        {"value": "atk_percent", "label": "攻击力% (ATK%)"},
+        {"value": "hp_percent", "label": "生命值% (HP%)"},
+        {"value": "def_percent", "label": "防御力% (DEF%)"},
+        {"value": "em", "label": "元素精通 (EM)"},
+        {"value": "crit_rate", "label": "暴击率 (CR)"},
+        {"value": "crit_dmg", "label": "暴击伤害 (CD)"},
+        {"value": "damage_bonus", "label": "全伤害加成 (All Dmg)"},
+        {"value": "elemental_bonus", "label": "元素伤害加成 (Ele Dmg)"},
+        # --- 新增的细分增伤 ---
+        {"value": "normal_bonus", "label": "普攻伤害加成 (Normal)"},
+        {"value": "charged_bonus", "label": "重击伤害加成 (Charged)"},
+        {"value": "plunging_bonus", "label": "下落伤害加成 (Plunging)"},
+        {"value": "skill_bonus", "label": "战技伤害加成 (Skill)"},
+        {"value": "burst_bonus", "label": "大招伤害加成 (Burst)"},
+        # --------------------
+        {"value": "def_reduction", "label": "防御削弱 (减防)"},
+        {"value": "resistance_percent", "label": "抗性降低 (减抗)"},
+        {"value": "base_multiplier_add", "label": "基础倍率增加 (云堇/申鹤)"}
     ]
 }
 
@@ -95,12 +104,10 @@ async def get_character_detail(char_id: str):
     """获取详情"""
     chars = load_json()
     if char_id not in chars:
-        # 如果是新建，返回默认空对象
         return CharacterData()
     return chars[char_id]
 
 
-# ✅ 新增：DELETE 接口
 @app.delete("/api/characters/{char_id}")
 async def delete_character(char_id: str):
     """删除指定角色"""
@@ -110,31 +117,23 @@ async def delete_character(char_id: str):
         save_json(chars)
         return {"status": "success", "message": f"{char_id} deleted"}
     else:
-        # 即使不存在也返回成功（幂等性），或者返回 404 看你需求
         return {"status": "ignored", "message": "Character not found"}
 
 
-# ✅ 修改：POST 接口增加 old_id 参数处理重命名逻辑
 @app.post("/api/characters/{char_id}")
 async def save_character(
         char_id: str,
         data: CharacterData,
-        old_id: Optional[str] = Query(None)  # 获取 URL 参数 ?old_id=xxx
+        old_id: Optional[str] = Query(None)
 ):
-    """
-    保存角色配置。
-    如果提供了 old_id 且 old_id != char_id，说明发生了改名，会删除旧数据。
-    """
+    """保存角色配置 (支持重命名)"""
     chars = load_json()
 
-    # 1. 处理改名逻辑：如果旧 ID 存在且不等于新 ID，先删除旧的
     if old_id and old_id != char_id and old_id in chars:
         print(f"Renaming character from {old_id} to {char_id}")
         del chars[old_id]
 
-    # 2. 保存新数据 (Create or Update)
     chars[char_id] = data.dict(by_alias=True)
-
     save_json(chars)
     return {"status": "success", "id": char_id}
 
@@ -164,5 +163,4 @@ async def calculate_damage(req: CalculationRequest):
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=8000)

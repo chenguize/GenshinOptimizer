@@ -640,27 +640,67 @@
       "elements": [
         "Hydro"
       ],
-      "atk": 774,
-      "hp": 15217,
-      "def": 597,
+      "atk": 774.0,
+      "hp": 15217.0,
+      "def": 597.0,
       "crit_rate": 0.05,
       "crit_dmg": 0.5,
-      "em": 0
+      "em": 16.0,
+      "energy_recharge_bonus": 0.0
     },
-    "skills": {},
+    "skills": {
+      "NormalAttack": {
+        "default": {
+          "multipliers": [],
+          "element": "",
+          "damage_type": ""
+        }
+      },
+      "ChargedAttack": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 28.048
+            }
+          ],
+          "element": "",
+          "damage_type": ""
+        }
+      },
+      "PlungingAttack": {
+        "default": {
+          "multipliers": [],
+          "element": "",
+          "damage_type": ""
+        }
+      },
+      "ElementalSkill": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 23.16
+            }
+          ],
+          "element": "",
+          "damage_type": ""
+        }
+      },
+      "ElementalBurst": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 47.3
+            }
+          ],
+          "element": "",
+          "damage_type": ""
+        }
+      }
+    },
     "buffs": [
-      {
-        "type": "hp_percent",
-        "value": 0.16,
-        "scope": "self",
-        "element": "null"
-      },
-      {
-        "type": "charged_bonus",
-        "value": 0.42,
-        "scope": "self",
-        "element": "null"
-      },
       {
         "type": "crit_dmg",
         "value": 1.686,
@@ -669,9 +709,15 @@
       },
       {
         "type": "elemental_bonus",
-        "value": 0.3,
+        "value": 0.72,
         "scope": "self",
-        "element": "Hydro"
+        "element": "null"
+      },
+      {
+        "type": "hp_percent",
+        "value": 0.16,
+        "scope": "self",
+        "element": "null"
       }
     ]
   },
