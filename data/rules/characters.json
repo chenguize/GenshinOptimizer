@@ -1,297 +1,4 @@
 {
-  "caoshen": {
-    "base_stats": {
-      "elements": [
-        "Physical"
-      ],
-      "atk": 841,
-      "hp": 10361,
-      "def": 630,
-      "crit_rate": 0.05,
-      "crit_dmg": 0.5,
-      "em": 380,
-      "energy_recharge_bonus": 0
-    },
-    "skills": {
-      "NormalAttack": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Dendro",
-          "damage_type": "attack"
-        }
-      },
-      "ChargedAttack": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Dendro",
-          "damage_type": "Charged"
-        }
-      },
-      "PlungingAttack": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Dendro",
-          "damage_type": "attack"
-        }
-      },
-      "ElementalSkill": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 219.3
-            },
-            {
-              "type": "em",
-              "value": 438.6
-            }
-          ],
-          "element": "Dendro",
-          "damage_type": "Skill"
-        }
-      },
-      "ElementalBurst": {
-        "default": {
-          "multipliers": [],
-          "element": "Physical",
-          "damage_type": "Skill"
-        }
-      }
-    },
-    "buffs": [
-      {
-        "type": "em",
-        "value": 290.0,
-        "scope": "team",
-        "element": "null"
-      },
-      {
-        "type": "elemental_bonus",
-        "value": 0.94,
-        "scope": "self",
-        "element": "null"
-      },
-      {
-        "type": "em",
-        "value": 92.0,
-        "scope": "self",
-        "element": "null"
-      },
-      {
-        "type": "def_reduction",
-        "value": 0.3,
-        "scope": "team",
-        "element": "null"
-      }
-    ]
-  },
-  "dulin": {
-    "base_stats": {
-      "elements": [
-        "Pyro"
-      ],
-      "atk": 337,
-      "hp": 12907,
-      "def": 789,
-      "crit_rate": 0.05,
-      "crit_dmg": 0.5,
-      "em": 0,
-      "energy_recharge_bonus": 0
-    },
-    "skills": {
-      "NormalAttack": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Physical",
-          "damage_type": "attack"
-        }
-      },
-      "ChargedAttack": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "hp_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Pyro",
-          "damage_type": "Charged"
-        }
-      },
-      "ElementalSkill": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Pyro",
-          "damage_type": "Skill"
-        }
-      },
-      "ElementalBurst": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Pyro",
-          "damage_type": "Burst"
-        }
-      }
-    },
-    "buffs": [
-      {
-        "type": "damage_bonus",
-        "value": 0.5,
-        "scope": "team",
-        "element": "null"
-      },
-      {
-        "type": "skill_type_bonus",
-        "value": 1000,
-        "scope": "team",
-        "element": "null"
-      },
-      {
-        "type": "atk_percent",
-        "value": 0.28,
-        "scope": "team",
-        "element": "null"
-      },
-      {
-        "type": "resistance_percent",
-        "value": 0.35,
-        "scope": "team",
-        "element": "null"
-      }
-    ]
-  },
-  "longwang": {
-    "base_stats": {
-      "elements": [
-        "Hydro"
-      ],
-      "atk": 774,
-      "hp": 15217,
-      "def": 597,
-      "crit_rate": 0.05,
-      "crit_dmg": 0.5,
-      "em": 0,
-      "energy_recharge_bonus": 0
-    },
-    "skills": {
-      "NormalAttack": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Physical",
-          "damage_type": "attack"
-        }
-      },
-      "ChargedAttack": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "hp_percent",
-              "value": 17.53
-            }
-          ],
-          "element": "Hydro",
-          "damage_type": "Charged"
-        }
-      },
-      "PlungingAttack": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "atk_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Dendro",
-          "damage_type": "Plunging"
-        }
-      },
-      "ElementalSkill": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "hp_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Hydro",
-          "damage_type": "Skill"
-        }
-      },
-      "ElementalBurst": {
-        "default": {
-          "multipliers": [
-            {
-              "type": "hp_percent",
-              "value": 0.2
-            }
-          ],
-          "element": "Hydro",
-          "damage_type": "Burst"
-        }
-      }
-    },
-    "buffs": [
-      {
-        "type": "hp_percent",
-        "value": 0.16,
-        "scope": "self",
-        "element": "null"
-      },
-      {
-        "type": "charged_bonus",
-        "value": 0.42,
-        "scope": "self",
-        "element": "null"
-      },
-      {
-        "type": "crit_dmg",
-        "value": 1.686,
-        "scope": "self",
-        "element": "null"
-      },
-      {
-        "type": "elemental_bonus",
-        "value": 0.3,
-        "scope": "self",
-        "element": "Hydro"
-      }
-    ]
-  },
   "水神-芙宁娜": {
     "base_stats": {
       "elements": [
@@ -737,6 +444,12 @@
         "element": "null"
       },
       {
+        "type": "base_multiplier_add",
+        "value": 2728.0,
+        "scope": "team",
+        "element": "null"
+      },
+      {
         "type": "atk_percent",
         "value": 0.45,
         "scope": "team",
@@ -745,6 +458,258 @@
       {
         "type": "hp_percent",
         "value": 0.45,
+        "scope": "team",
+        "element": "null"
+      }
+    ]
+  },
+  "瓦蕾莎": {
+    "base_stats": {
+      "elements": [
+        "Electro"
+      ],
+      "atk": 866,
+      "hp": 12000,
+      "def": 700,
+      "em": 0,
+      "crit_rate": 0.242,
+      "crit_dmg": 0.5
+    },
+    "skills": {
+      "NormalAttack": {
+        "default": {
+          "element": "Physical",
+          "damage_type": "Skill",
+          "multipliers": []
+        }
+      },
+      "ChargedAttack": {
+        "default": {
+          "element": "Physical",
+          "damage_type": "Skill",
+          "multipliers": []
+        }
+      },
+      "PlungingAttack": {
+        "default": {
+          "element": "Electro",
+          "damage_type": "plunging",
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 622.0
+            }
+          ]
+        }
+      },
+      "ElementalSkill": {
+        "default": {
+          "element": "Physical",
+          "damage_type": "Skill",
+          "multipliers": []
+        }
+      },
+      "ElementalBurst": {
+        "default": {
+          "element": "Physical",
+          "damage_type": "Skill",
+          "multipliers": []
+        }
+      }
+    },
+    "buffs": [
+      {
+        "type": "atk_percent",
+        "value": 0.7,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "atk_percent",
+        "value": 6.0,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "crit_dmg",
+        "value": 0.882,
+        "scope": "self",
+        "element": "null"
+      }
+    ]
+  },
+  "杜林": {
+    "base_stats": {
+      "elements": [
+        "Pyro"
+      ],
+      "atk": 955,
+      "hp": 12907,
+      "def": 789,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 0,
+      "energy_recharge_bonus": 0
+    },
+    "skills": {
+      "NormalAttack": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
+          "element": "Physical",
+          "damage_type": "attack"
+        }
+      },
+      "ChargedAttack": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 0.2
+            }
+          ],
+          "element": "Pyro",
+          "damage_type": "Charged"
+        }
+      },
+      "ElementalSkill": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
+          "element": "Pyro",
+          "damage_type": "Skill"
+        }
+      },
+      "ElementalBurst": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.2
+            }
+          ],
+          "element": "Pyro",
+          "damage_type": "Burst"
+        }
+      },
+      "PlungingAttack": {
+        "default": {
+          "element": "Physical",
+          "damage_type": "Skill",
+          "multipliers": []
+        }
+      }
+    },
+    "buffs": [
+      {
+        "type": "damage_bonus",
+        "value": 0.5,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "base_multiplier_add",
+        "value": 1000.0,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "atk_percent",
+        "value": 0.28,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "resistance_percent",
+        "value": 0.35,
+        "scope": "team",
+        "element": "null"
+      }
+    ]
+  },
+  "龙王": {
+    "base_stats": {
+      "elements": [
+        "Hydro"
+      ],
+      "atk": 774,
+      "hp": 15217,
+      "def": 597,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 0
+    },
+    "skills": {},
+    "buffs": [
+      {
+        "type": "hp_percent",
+        "value": 0.16,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "charged_bonus",
+        "value": 0.42,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "crit_dmg",
+        "value": 1.686,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "elemental_bonus",
+        "value": 0.3,
+        "scope": "self",
+        "element": "Hydro"
+      }
+    ]
+  },
+  "草神": {
+    "base_stats": {
+      "elements": [
+        "Physical"
+      ],
+      "atk": 841,
+      "hp": 10361,
+      "def": 630,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 380
+    },
+    "skills": {},
+    "buffs": [
+      {
+        "type": "em",
+        "value": 290.0,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "elemental_bonus",
+        "value": 0.94,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "em",
+        "value": 92.0,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "def_reduction",
+        "value": 0.3,
         "scope": "team",
         "element": "null"
       }

@@ -52,7 +52,7 @@ BUFF_TYPE_MAP = [
     ("em", "元素精通"), ("def_reduction", "防御削弱"),
     ("resistance_percent", "抗性降低"), ("burst_bonus", "大招加成"),
     ("skill_bonus", "战技加成"), ("charged_bonus", "重击加成"),
-    ("attack_bonus", "普攻加成"), ("plunging_bonus", "下落加成")
+    ("attack_bonus", "普攻加成"), ("plunging_bonus", "下落加成"),("base_multiplier_add","固定增伤")
 ]
 
 
@@ -172,7 +172,7 @@ custom_assets = Div(
                 {value:'em',text:'元素精通'},{value:'def_reduction',text:'防御削弱'},
                 {value:'resistance_percent',text:'抗性降低'},{value:'burst_bonus',text:'大招加成'},
                 {value:'skill_bonus',text:'战技加成'},{value:'charged_bonus',text:'重击加成'},
-                {value:'attack_bonus',text:'普攻加成'},{value:'plunging_bonus',text:'下落加成'}
+                {value:'attack_bonus',text:'普攻加成'},{value:'plunging_bonus',text:'下落加成'},{value:'base_multiplier_add',text:'固定增伤'}
             ], 'buff_type_' + index));
             const valInput = document.createElement('input');
             valInput.type = 'number'; valInput.step = '0.01'; valInput.name = 'buff_value_' + index; valInput.value = '0';

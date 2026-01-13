@@ -167,4 +167,4 @@ def run_optimizer(target_char: str, teammates: List[str], skill_type: str = "Ele
 
 if __name__ == "__main__":
     # 请根据您的实际路径修改 set_effects.json 路径
-    run_optimizer("huoshen", [ "xinuoning", "wanye"], forced_set="",skill_type="PlungingAttack",reaction="melt_cryo")
+    run_optimizer("瓦蕾莎", [ "希诺宁", "万叶","杜林"], forced_set="",skill_type="PlungingAttack",reaction="")
