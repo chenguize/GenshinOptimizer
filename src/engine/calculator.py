@@ -113,7 +113,7 @@ class DamageCalculator:
 if __name__ == "__main__":
     final_atk, final_hp, final_def, final_em = 800, 50683, 700, 980
     crit_rate, crit_damage, all_damage_bonus = 0.986, 3.725, 3.326
-    skill_multipliers_demo = [{"type": "hp_percent", "value": 17.53}]
+    skill_multipliers_demo = [{"type": "hp_percent", "value": 28.048}]
 
     damage = DamageCalculator.calculate_damage(
         skill_multipliers=skill_multipliers_demo,
@@ -124,7 +124,7 @@ if __name__ == "__main__":
         all_damage_bonus=all_damage_bonus,
         crit_rate=crit_rate,
         crit_damage=crit_damage,
-        base_multiplier_add=0,  # 队友提供的基础倍率加成
+        base_multiplier_add=2728,  # 队友提供的基础倍率加成
         reaction_bonus_buff=0,  # 激化反应加成
         reaction_specific_bonus=0.0,  # 增幅反应加成
         def_reduction=0,
@@ -132,4 +132,4 @@ if __name__ == "__main__":
         resistance_percent=0.85,  # 减抗30%
     )
 
-    print(f"最终期望伤害 ≈ {damage*1.6:,.0f}")
+    print(f"最终期望伤害 ≈ {damage:,.0f}")

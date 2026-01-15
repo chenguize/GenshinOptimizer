@@ -1,127 +1,298 @@
 {
   "长夜之誓": {
     "2": [
-      { "type": "em", "value": 80, "element": "null" }
+      {
+        "type": "em",
+        "value": 80,
+        "element": "null"
+      }
     ],
     "4": [
-      { "note": "触发灵夜机制后提升攻击力或全元素增伤，需手动指定数值", "element": "null" }
+      {
+        "note": "触发灵夜机制后提升攻击力或全元素增伤，需手动指定数值",
+        "element": "null"
+      }
     ]
   },
-
   "深廊终曲": {
     "2": [
-      { "type": "atk_percent", "value": 0.18, "element": "null" }
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "elemental_bonus", "value": 0.0, "note": "特定状态下获得增伤，数值随角色机制变化", "element": "null" }
+      {
+        "type": "elemental_bonus",
+        "value": 0.0,
+        "note": "特定状态下获得增伤，数值随角色机制变化",
+        "element": "null"
+      }
     ]
   },
-
   "烬城勇者绘卷": {
     "2": [
-      { "note": "能量回复机制，不直接参与伤害乘区", "element": "null" }
+      {
+        "note": "能量回复机制，不直接参与伤害乘区",
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "elemental_bonus", "value": 0.40, "note": "触发对应元素反应及夜魂状态后的最大全队加成", "element": "null" }
+      {
+        "type": "elemental_bonus",
+        "value": 0.4,
+        "note": "触发对应元素反应及夜魂状态后的最大全队加成",
+        "element": "null"
+      }
     ]
   },
-
   "黑曜典藏": {
     "2": [
-      { "type": "damage_bonus", "value": 0.15, "note": "夜魂加持状态下增伤", "element": "null" }
+      {
+        "type": "damage_bonus",
+        "value": 0.15,
+        "note": "夜魂加持状态下增伤",
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "crit_rate", "value": 0.40, "note": "消耗夜魂值后提升暴击率", "element": "null" }
+      {
+        "type": "crit_rate",
+        "value": 0.4,
+        "note": "消耗夜魂值后提升暴击率",
+        "element": "null"
+      }
     ]
   },
-
   "谐律异想断章": {
     "2": [
-      { "type": "atk_percent", "value": 0.18, "element": "null" }
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "damage_bonus", "value": 0.54, "note": "生命之契数值变动叠满3层加成", "element": "null" }
+      {
+        "type": "damage_bonus",
+        "value": 0.54,
+        "note": "生命之契数值变动叠满3层加成",
+        "element": "null"
+      }
     ]
   },
-
   "未竟的遐思": {
     "2": [
-      { "type": "atk_percent", "value": 0.18, "element": "null" }
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "damage_bonus", "value": 0.50, "note": "附近存在燃烧状态敌人时增伤", "element": "null" }
+      {
+        "type": "damage_bonus",
+        "value": 0.5,
+        "note": "附近存在燃烧状态敌人时增伤",
+        "element": "null"
+      }
     ]
   },
-
   "昔时之歌": {
     "2": [
-      { "type": "healing_bonus", "value": 0.15, "element": "null" }
+      {
+        "type": "healing_bonus",
+        "value": 0.15,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "base_multiplier_add", "value": 0, "note": "基于治疗量的固定伤害加成，由于依赖治疗面板，暂设为0", "element": "null" }
+      {
+        "type": "base_multiplier_add",
+        "value": 0,
+        "note": "基于治疗量的固定伤害加成，由于依赖治疗面板，暂设为0",
+        "element": "null"
+      }
     ]
   },
-
   "回声之林夜话": {
     "2": [
-      { "type": "atk_percent", "value": 0.18, "element": "null" }
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "elemental_bonus", "value": 0.50, "element": "geo", "note": "结晶盾保护下岩伤提升效果最大值", "element": "null" }
+      {
+        "type": "elemental_bonus",
+        "value": 0.5,
+        "element": "null",
+        "note": "结晶盾保护下岩伤提升效果最大值"
+      }
     ]
   },
-
   "流浪大地的乐团": {
     "2": [
-      { "type": "em", "value": 80, "element": "null" }
+      {
+        "type": "em",
+        "value": 80,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "skill_bonus", "value": 0.35, "note": "仅加成弓、法器角色的重击伤害", "element": "null" }
+      {
+        "type": "skill_bonus",
+        "value": 0.35,
+        "note": "仅加成弓、法器角色的重击伤害",
+        "element": "null"
+      }
     ]
   },
-
   "追忆之注连": {
     "2": [
-      { "type": "atk_percent", "value": 0.18, "element": "null" }
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "skill_bonus", "value": 0.50, "note": "普攻、重击、下落攻击伤害提升", "element": "null" }
+      {
+        "type": "skill_bonus",
+        "value": 0.5,
+        "note": "普攻、重击、下落攻击伤害提升",
+        "element": "null"
+      }
     ]
   },
-
   "教官": {
     "2": [
-      { "type": "em", "value": 80, "element": "null" }
+      {
+        "type": "em",
+        "value": 80,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "em", "value": 120, "note": "触发元素反应后全队精通加成", "element": "null" }
+      {
+        "type": "em",
+        "value": 120,
+        "note": "触发元素反应后全队精通加成",
+        "element": "null"
+      }
     ]
   },
-
   "纺月的夜歌": {
     "2": [
-      { "type": "def_percent", "value": 0.20, "element": "null" }
+      {
+        "type": "def_percent",
+        "value": 0.2,
+        "element": "null"
+      }
     ],
     "4": [
-      { "note": "5.2新套装，机制涉及重击伤害加成与元素类型判定，暂不硬编码具体值", "element": "null" }
+      {
+        "note": "5.2新套装，机制涉及重击伤害加成与元素类型判定，暂不硬编码具体值",
+        "element": "null"
+      }
     ]
   },
-
   "穹境示显之夜": {
     "2": [
-      { "type": "atk_percent", "value": 0.18, "element": "null" }
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
     ],
     "4": [
-      { "note": "5.2新套装，机制较为复杂，留空", "element": "null" }
+      {
+        "note": "5.2新套装，机制较为复杂，留空",
+        "element": "null"
+      }
     ]
   },
   "逐影猎人": {
     "2": [
-      { "type": "attack_bonus", "value": 0.15, "element": "null" },
-      { "type": "charged_bonus", "value": 0.15, "element": "null" }
+      {
+        "type": "attack_bonus",
+        "value": 0.15,
+        "element": "null"
+      },
+      {
+        "type": "charged_bonus",
+        "value": 0.15,
+        "element": "null"
+      }
     ],
     "4": [
-      { "type": "crit_rate", "value": 0.36 , "element": "null" }
+      {
+        "type": "crit_rate",
+        "value": 0.36,
+        "element": "null"
+      }
     ]
+  },
+  "昔日宗室之仪": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
+    ],
+    "4": []
+  },
+  "千岩牢固": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
+    ],
+    "4": []
+  },
+  "辰砂往生录": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
+    ],
+    "4": []
+  },
+  "黄金剧团": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
+    ],
+    "4": []
+  },
+  "冰风迷途的勇士": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
+    ],
+    "4": []
+  },
+  "乐园遗落之花": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
+    ],
+    "4": []
   }
 }
