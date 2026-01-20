@@ -2,18 +2,11 @@
 import json
 import os
 from typing import List, Dict, Any, Optional
-from src.optimizer.genetic_algo import ArtifactOptimizer
 from collections import Counter
 
-# --- 常量定义：增伤映射表 (简化逻辑的关键) ---
-BONUS_MAPPING = {
-    "skill_bonus": "ElementalSkill",
-    "burst_bonus": "ElementalBurst",
-    "normal_bonus": "NormalAttack",
-    "attack_bonus": "NormalAttack",  # 兼容旧版
-    "charged_bonus": "ChargedAttack",
-    "plunging_bonus": "PlungingAttack"
-}
+from src.optimizer.genetic_algo import ArtifactOptimizer
+from src.engine.calculator import DamageCalculator
+from src.engine.analyzer import SubstatAnalyzer
 
 
 def load_json(path: str) -> Any:
@@ -24,253 +17,265 @@ def load_json(path: str) -> Any:
 
 
 def format_value(t: str, v: float) -> str:
-    # 包含了 dmg 关键字，修复暴伤显示问题
-    keywords = ["percent", "rate", "damage", "dmg", "bonus", "reduction", "ignore", "res"]
+    keywords = ["percent", "pct", "rate", "damage", "dmg", "bonus", "reduction", "ignore", "res"]
     if any(x in t for x in keywords):
         return f"{v:+.1%}"
     return f"{v:+.0f}"
 
 
-def resolve_skill_element(char_data: Dict, skill_type: str) -> str:
-    """
-    确定技能实际元素：
-    1. 读 JSON 配置 (Refactored JSON 应该都有值)
-    2. 如果为空，回退到角色自身属性
-    """
+def resolve_skill_data(char_data: Dict, skill_type: str):
+    """解析技能元素和伤害类型"""
     skill_config = char_data.get("skills", {}).get(skill_type, {}).get("default", {})
-    defined_element = skill_config.get("element", "")
+    element = skill_config.get("element", "")
+    if not element:
+        char_elements = char_data.get("base_stats", {}).get("elements", ["Physical"])
+        element = char_elements[0] if char_elements else "Physical"
+    damage_type = skill_config.get("damage_type", skill_type)
+    return element, damage_type
 
-    if defined_element and defined_element != "":
-        return defined_element
 
-    char_elements = char_data.get("base_stats", {}).get("elements", ["Physical"])
-    return char_elements[0] if char_elements else "Physical"
+def apply_single_buff(t: str, v: float, sums: Dict, other_params: Dict, target_element: str = None,
+                      buff_element: str = "null"):
+    t = t.lower().strip()
+    # 基础属性
+    if t in ["atk_percent", "atk_pct", "atk%"]:
+        sums["atk_pct"] = sums.get("atk_pct", 0.0) + v
+    elif t in ["atk", "atk_flat"]:
+        sums["atk_flat"] = sums.get("atk_flat", 0.0) + v
+    elif t in ["hp_percent", "hp_pct", "hp%"]:
+        sums["hp_pct"] = sums.get("hp_pct", 0.0) + v
+    elif t in ["hp", "hp_flat"]:
+        sums["hp_flat"] = sums.get("hp_flat", 0.0) + v
+    elif t in ["def_percent", "def_pct", "def%"]:
+        sums["def_pct"] = sums.get("def_pct", 0.0) + v
+    elif t in ["def", "def_flat"]:
+        sums["def_flat"] = sums.get("def_flat", 0.0) + v
+    elif t in ["em", "elemental_mastery"]:
+        sums["em"] = sums.get("em", 0.0) + v
+    elif t in ["crit_rate", "crit_rate_percent", "cr"]:
+        sums["crit_rate"] = sums.get("crit_rate", 0.0) + v
+    elif t in ["crit_dmg", "crit_dmg", "cd"]:
+        sums["crit_dmg"] = sums.get("crit_dmg", 0.0) + v
+    elif t in ["energy_recharge", "energy_recharge_bonus", "er"]:
+        sums["er"] = sums.get("er", 0.0) + v
+    # 增伤属性
+    elif t in ["damage_bonus", "dmg_bonus", "all_damage_bonus"]:
+        return v
+    elif "bonus" in t and any(ele in t for ele in
+                              ["pyro", "hydro", "cryo", "electro", "anemo", "geo", "dendro", "physical", "elemental"]):
+        curr_buff_ele = buff_element.lower() if "elemental" in t else t.replace("_bonus", "").replace("_dmg",
+                                                                                                      "").strip()
+        if curr_buff_ele in ["null", "none", "all"] or curr_buff_ele == (
+        target_element.lower() if target_element else ""):
+            other_params["elemental_bonus"] = other_params.get("elemental_bonus", 0.0) + v
+    elif any(act in t for act in ["charged", "normal", "plunging", "skill", "burst"]):
+        key = [k for k in ["charged_bonus", "normal_bonus", "plunging_bonus", "skill_bonus", "burst_bonus"] if
+               k.split('_')[0] in t][0]
+        other_params[key] = other_params.get(key, 0.0) + v
+    else:
+        other_params[t] = other_params.get(t, 0.0) + v
+    return 0.0
 
 
-def apply_team_buffs_to_panel(target_key: str, team_data: Dict[str, Dict], actual_skill_element: str, skill_type: str):
-    """
-    计算面板与增伤。
-    actual_skill_element: 技能实际造成的元素类型 (e.g. "Hydro")
-    skill_type: 技能类型 (e.g. "ChargedAttack")
-    """
-    char_base = team_data[target_key]["base_stats"]
-    base_info = {
-        "base_atk": char_base.get("atk", 0),
-        "base_hp": char_base.get("hp", 0),
-        "base_def": char_base.get("def", 0) or char_base.get("def_", 0)
+def calculate_basic_panel(char_data: Dict, team_sums: Dict = None) -> Dict[str, float]:
+    base = char_data.get("base_stats", {})
+    sums = team_sums.copy() if team_sums else {}
+    sums["em"] = sums.get("em", 0.0) + base.get("em", 0.0)
+    sums["er"] = sums.get("er", 0.0) + (1.0 + base.get("energy_recharge_bonus", 0.0))
+    sums["crit_rate"] = sums.get("crit_rate", 0.0) + base.get("crit_rate", 0.05)
+    sums["crit_dmg"] = sums.get("crit_dmg", 0.0) + base.get("crit_dmg", 0.5)
+    for b in char_data.get("buffs", []):
+        if isinstance(b.get("value"), (int, float)): apply_single_buff(b["type"], b["value"], sums, {})
+    base_def = base.get("def", 0) or base.get("def_", 0)
+    return {
+        "atk": base.get("atk", 0) * (1 + sums.get("atk_pct", 0)) + sums.get("atk_flat", 0),
+        "hp": base.get("hp", 0) * (1 + sums.get("hp_pct", 0)) + sums.get("hp_flat", 0),
+        "def": base_def * (1 + sums.get("def_pct", 0)) + sums.get("def_flat", 0),
+        "em": sums["em"], "er": sums["er"], "crit_rate": sums["crit_rate"], "crit_dmg": sums["crit_dmg"]
     }
-    sums = {
-        "atk_pct": 0.0, "atk_flat": 0.0, "hp_pct": 0.0, "hp_flat": 0.0,
-        "def_pct": 0.0, "def_flat": 0.0, "em": char_base.get("em", 0),
-        "crit_rate": char_base.get("crit_rate", 0.05),
-        "crit_dmg": char_base.get("crit_dmg", 0.50) or char_base.get("crit_damage", 0.50),
-    }
+
+
+def apply_team_buffs_to_panel(target_key, team_data, skill_ele, skill_type):
+    target_base_stats = team_data[target_key]["base_stats"]
+    base_info = {"base_atk": target_base_stats.get("atk", 0), "base_hp": target_base_stats.get("hp", 0),
+                 "base_def": target_base_stats.get("def", 0) or target_base_stats.get("def_", 0)}
+    team_global_sums, logs = {}, {}
+    elems = [d["base_stats"]["elements"][0].lower() for d in team_data.values()]
+    cnt = Counter(elems)
+    if cnt.get("pyro", 0) >= 2: team_global_sums["atk_pct"] = 0.25; logs.setdefault("System", []).append(
+        "双火共鸣 +25% ATK")
+    if cnt.get("hydro", 0) >= 2: team_global_sums["hp_pct"] = 0.25; logs.setdefault("System", []).append(
+        "双水共鸣 +25% HP")
+    if cnt.get("dendro", 0) >= 2: team_global_sums["em"] = 100; logs.setdefault("System", []).append("双草共鸣 +100 EM")
     fixed_damage_bonus = 1.0
-    other_params = {
-        "def_reduction": 0.0, "def_ignore": 0.0, "resistance_percent": 0.0,
-        "reaction_bonus_buff": 0.0, "reaction_specific_bonus": 0.0, "base_multiplier_add": 0.0,
-    }
-
-    # 中文显示映射
-    type_names = {
-        "atk_percent": "攻击力%", "atk_flat": "固定攻击", "hp_percent": "生命值%", "hp_flat": "固定生命",
-        "def_percent": "防御力%", "def_flat": "固定防御", "em": "元素精通",
-        "crit_rate": "暴击率", "crit_dmg": "暴击伤害",
-        "damage_bonus": "全伤害加成", "elemental_bonus": "元素伤害加成",
-        "physical_bonus": "物理伤害加成",
-        "skill_bonus": "战技伤害加成", "burst_bonus": "爆发伤害加成",
-        "charged_bonus": "重击伤害加成", "plunging_bonus": "下落伤害加成",
-        "normal_bonus": "普攻伤害加成",
-        "def_reduction": "敌人减防", "resistance_percent": "敌人减抗",
-        "base_multiplier_add": "基础倍率提升"
-    }
-
-    team_buff_logs = {}
-
-    # === 元素共鸣 (基于角色自身属性) ===
-    elements_in_team = [data["base_stats"]["elements"][0].lower() for data in team_data.values()]
-    element_counts = Counter(elements_in_team)
-    res_logs = []
-
-    if element_counts.get("pyro", 0) >= 2:
-        sums["atk_pct"] += 0.25
-        res_logs.append("双火共鸣 (攻击力+25%)")
-    if element_counts.get("water", 0) >= 2 or element_counts.get("hydro", 0) >= 2:
-        sums["hp_pct"] += 0.25
-        res_logs.append("双水共鸣 (生命值+25%)")
-    if element_counts.get("dendro", 0) >= 2:
-        sums["em"] += 100
-        res_logs.append("双草共鸣 (精通+100)")
-    if element_counts.get("geo", 0) >= 2:
-        fixed_damage_bonus += 0.15
-        res_logs.append("双岩共鸣 (全增伤+15%)")
-    if res_logs: team_buff_logs["元素共鸣"] = res_logs
-
-    # === 遍历 Buff ===
+    if cnt.get("geo", 0) >= 2: fixed_damage_bonus += 0.15; logs.setdefault("System", []).append("双岩共鸣 +15% DMG")
+    teammate_panels = {name: calculate_basic_panel(data, team_global_sums) for name, data in team_data.items()}
+    sums = team_global_sums.copy()
+    sums.update({"em": sums.get("em", 0.0) + target_base_stats.get("em", 0),
+                 "er": sums.get("er", 0.0) + (1.0 + target_base_stats.get("energy_recharge_bonus", 0.0)),
+                 "crit_rate": sums.get("crit_rate", 0.0) + target_base_stats.get("crit_rate", 0.05),
+                 "crit_dmg": sums.get("crit_dmg", 0.0) + target_base_stats.get("crit_dmg", 0.5)})
+    other_params, pending_dynamic = {}, []
     for name, data in team_data.items():
         is_target = (name == target_key)
-        char_display = name.upper()
-        current_logs = []
-
         for buff in data.get("buffs", []):
-            scope = buff.get("scope", "self")
-            if scope == "self" and not is_target: continue
-
-            t, v = buff["type"], buff["value"]
-            buff_elem = buff.get("element", "null")
-            active = True
-
-            # --- 基础属性 ---
-            if t == "atk_percent":
-                sums["atk_pct"] += v
-            elif t == "atk_flat":
-                sums["atk_flat"] += v
-            elif t == "hp_percent":
-                sums["hp_pct"] += v
-            elif t == "hp_flat":
-                sums["hp_flat"] += v
-            elif t == "def_percent":
-                sums["def_pct"] += v
-            elif t == "def_flat":
-                sums["def_flat"] += v
-            elif t == "em":
-                sums["em"] += v
-            elif t == "crit_rate":
-                sums["crit_rate"] += v
-            elif t in ["crit_dmg", "crit_damage"]:
-                sums["crit_dmg"] += v
-            elif t in other_params:
-                other_params[t] += v
-
-            # --- 增伤逻辑 (重构核心) ---
-
-            # 1. 技能类型专用增伤 (使用 BONUS_MAPPING 查表)
-            elif t in BONUS_MAPPING:
-                required_skill = BONUS_MAPPING[t]
-                if skill_type == required_skill:
-                    fixed_damage_bonus += v
-                else:
-                    active = False
-
-            # 2. 全伤害加成
-            elif t == "damage_bonus":
-                fixed_damage_bonus += v
-
-            # 3. 元素/物理增伤
-            elif t == "elemental_bonus":
-                # 指定了元素 -> 严格匹配
-                if buff_elem not in ["null", "", None]:
-                    if buff_elem.lower() == actual_skill_element.lower():
-                        fixed_damage_bonus += v
-                    else:
-                        active = False
-                # 未指定(null) -> 只要不是物理就生效
-                else:
-                    if actual_skill_element.lower() != "physical":
-                        fixed_damage_bonus += v
-                    else:
-                        active = False  # 物理不吃通用元素杯
-
-            elif t == "physical_bonus":
-                if actual_skill_element.lower() == "physical":
-                    fixed_damage_bonus += v
-                else:
-                    active = False
-
-            else:
-                active = False
-
-            if active:
-                log_elem = f"[{buff_elem}]" if buff_elem not in ["null", ""] else ""
-                current_logs.append(f"{type_names.get(t, t)}{log_elem} {format_value(t, v)}")
-
-        if current_logs: team_buff_logs[char_display] = current_logs
-
-    fixed_panel = {
-        "atk": base_info["base_atk"] * (1 + sums["atk_pct"]) + sums["atk_flat"],
-        "hp": base_info["base_hp"] * (1 + sums["hp_pct"]) + sums["hp_flat"],
-        "def": base_info["base_def"] * (1 + sums["def_pct"]) + sums["def_flat"],
-        "em": sums["em"], "crit_rate": sums["crit_rate"], "crit_dmg": sums["crit_dmg"]
-    }
-    return base_info, fixed_panel, fixed_damage_bonus, other_params, team_buff_logs
+            if buff.get("scope", "self") == "self" and not is_target: continue
+            if isinstance(buff["value"], str): pending_dynamic.append((name, buff)); continue
+            val = apply_single_buff(buff["type"], buff["value"], sums, other_params, skill_ele,
+                                    buff.get("element", "null"))
+            fixed_damage_bonus += val
+            if is_target or buff.get("scope") == "team": logs.setdefault(name, []).append(
+                f"[{buff['type']}] {format_value(buff['type'], buff['value'])}")
+    current_ctx = teammate_panels[target_key]
+    for owner_name, buff in pending_dynamic:
+        eval_ctx = current_ctx if owner_name == target_key else teammate_panels.get(owner_name, {})
+        val = DamageCalculator.resolve_dynamic_value(buff["value"], eval_ctx)
+        d_val = apply_single_buff(buff["type"], val, sums, other_params, skill_ele, buff.get("element", "null"))
+        fixed_damage_bonus += d_val
+        logs.setdefault(owner_name, []).append(
+            f"[{buff['type']}] {format_value(buff['type'], val)} (动态: {buff['value']})")
+    return base_info, {"atk": base_info["base_atk"] * (1 + sums.get("atk_pct", 0)) + sums.get("atk_flat", 0),
+                       "hp": base_info["base_hp"] * (1 + sums.get("hp_pct", 0)) + sums.get("hp_flat", 0),
+                       "def": base_info["base_def"] * (1 + sums.get("def_pct", 0)) + sums.get("def_flat", 0),
+                       "em": sums["em"], "er": sums["er"] - 1.0,
+                       "crit_rate": sums["crit_rate"], "crit_dmg": sums["crit_dmg"],
+                       "damage_bonus": fixed_damage_bonus}, fixed_damage_bonus, other_params, logs
 
 
-def run_optimizer(target_char: str, teammates: List[str], skill_type: str = "ElementalSkill",
-                  reaction: Optional[str] = None, forced_set: Optional[str] = None):
-    # 路径根据您的实际情况可能需要调整
-    characters = load_json("data/rules/characters.json")
-    artifacts = load_json("data/processed/artifacts.json")
-    set_effects = load_json("data/rules/set_effects.json")
+def run_optimizer(target_char, teammates, skill_type="ElementalSkill", reaction=None, forced_set=None):
+    chars = load_json("data/rules/characters.json")
+    arts = load_json("data/processed/artifacts.json")
+    sets = load_json("data/rules/set_effects.json")
 
-    team_data = {k: characters[k] for k in ([target_char] + teammates) if k in characters}
-    if target_char not in characters:
+    if target_char not in chars:
         print(f"Error: Character {target_char} not found.")
-        return
+        return None
 
-    # [步骤1] 解析技能实际属性
-    actual_skill_element = resolve_skill_element(characters[target_char], skill_type)
+    team_data = {k: chars[k] for k in [target_char] + teammates if k in chars}
+    ele, dmg_type = resolve_skill_data(chars[target_char], skill_type)
 
-    # [步骤2] 计算面板
-    base_info, fixed_panel, fixed_dmg_bonus, others, logs = apply_team_buffs_to_panel(
-        target_char, team_data, actual_skill_element, skill_type
+    # [步骤 1] 应用队伍 Buff 和共鸣
+    base, panel, fixed_dmg, others, logs = apply_team_buffs_to_panel(target_char, team_data, ele, skill_type)
+
+    # [步骤 2] 反应推断逻辑
+    # 显式传 "" 代表强制无反应，不进行自动推断
+    if reaction is None:
+        reaction = "spread" if ele.lower() == "dendro" else "aggravate" if ele.lower() == "electro" else None
+    elif reaction == "":
+        reaction = None
+
+    print(f"Running optimization for {target_char} ({dmg_type})...")
+
+    # [步骤 3] 初始化优化器
+    opt = ArtifactOptimizer(
+        arts, sets, base, panel, fixed_dmg,
+        chars[target_char]["skills"][skill_type]["default"]["multipliers"],
+        ele, skill_type, dmg_type, reaction, forced_set, **others
     )
+    res = opt.optimize(population_size=1000, generations=200)
 
-    # [步骤3] 自动推断反应
-    if reaction is None or reaction == "":
-        elem_lower = actual_skill_element.lower()
-        reaction = "spread" if elem_lower == "dendro" else "aggravate" if elem_lower == "electro" else None
+    solutions = []
+    others_params = others.copy()
 
-    # 抗性逻辑：将减抗数值转换为抗性系数 (假设基础抗性 10%)
-    total_res_shred = others['resistance_percent']
-    enemy_base_res = 0.10
-    final_res = enemy_base_res - total_res_shred
-    others['resistance_percent'] = 1 - (final_res / 2) if final_res < 0 else 1 - final_res
+    for i, r in enumerate(res, 1):
+        p = r["panel"]
 
-    print("\n" + "╔" + "═" * 78 + "╗")
-    print(f"║ 优化任务: {target_char.upper():<10} 技能: {skill_type:<15} 伤害元素: {actual_skill_element:<10} ║")
-    print("╠" + "═" * 78 + "╣")
-    print(
-        f"║ [1] 角色白字: ATK {base_info['base_atk']:.0f} | HP {base_info['base_hp']:.0f} | DEF {base_info['base_def']:.0f}")
-    print(f"║ [2] 队伍增益明细:")
-    for name, blist in logs.items(): print(f"║     ● {name:<10}: {', '.join(blist)}")
+        # 这里的 p 已经由 genetic_algo 修正，包含了 elemental_bonus 和 action_bonus
+        calc_args = {
+            "skill_multipliers": chars[target_char]["skills"][skill_type]["default"]["multipliers"],
+            "damage_type": dmg_type,
+            "all_damage_bonus": p["all_damage_bonus"],
+            "reaction": reaction,
+        }
 
-    initial_dmg_bonus_pct = (fixed_dmg_bonus - 1.0)
-    print(f"║ [3] 特殊乘区: 减抗 {total_res_shred:.1%} | 减防 {others['def_reduction']:.1%}")
-    print(f"║ [4] 队友后固定面板:")
-    print(
-        f"║     ● 属性: 攻击力 {fixed_panel['atk']:.0f} | 生命值 {fixed_panel['hp']:.0f} | 防御 {fixed_panel['def']:.0f} | 精通 {fixed_panel['em']:.0f}")
-    print(f"║     ● 暴击: {fixed_panel['crit_rate']:.1%} / {fixed_panel['crit_dmg']:.1%}")
-    print(f"║     ● 初始总增伤: {initial_dmg_bonus_pct:.1%}")
-    print("╚" + "═" * 78 + "╝")
+        # [步骤 4] 计算最终伤害
+        final_dmg = DamageCalculator.calculate_damage(
+            final_atk=p['atk'], final_hp=p['hp'], final_def=p['def'],
+            final_em=p['em'], final_er_bonus=p.get('energy_recharge_bonus', 0),
+            crit_rate=p['crit_rate'],
+            crit_dmg=p['crit_dmg'],
+            **calc_args, **others_params
+        )
 
-    optimizer = ArtifactOptimizer(
-        artifacts_data=artifacts, set_effects_data=set_effects,
-        base_info=base_info, fixed_panel=fixed_panel, fixed_damage_bonus=fixed_dmg_bonus,
-        target_skill_multipliers=characters[target_char]["skills"][skill_type]["default"]["multipliers"],
-        skill_type=skill_type,
-        character_element=actual_skill_element,
-        reaction=reaction, forced_set=forced_set, **others
-    )
+        # [步骤 5] 执行收益分析
 
-    results = optimizer.optimize(population_size=1000, generations=200)
+        substat_priority = SubstatAnalyzer.analyze(base, p, calc_args, others_params)
 
-    for i, res in enumerate(results, 1):
-        p = res["panel"]
-        total_dmg_bonus = p.get("all_damage_bonus", 0)
+        solutions.append({
+            "rank": i,
+            "damage": final_dmg,
+            "panel": p,
+            "sets": r["sets"],
+            "dmg_type": dmg_type,
+            "artifact_strings": r.get("artifact_strings", []),
+            "substat_priority": substat_priority
+        })
 
-        print(f"\n[方案 {i}] 期望伤害: {res['damage']:,.0f}")
-        print(
-            f" > 面板: 攻击力 {p['atk']:.0f} | 生命值 {p['hp']:.0f} | 增伤 {total_dmg_bonus:.1%} | 精通 {p['em']:.0f} | 暴击率 {p['crit_rate']:.1%} | 暴伤 {p['crit_damage']:.1%}")
+    return {
+        "meta": {"target_char": target_char, "skill_type": skill_type, "dmg_type": dmg_type},
+        "solutions": solutions,
+        "logs": logs
+    }
 
-        set_desc = " + ".join([f"{name}({count})" for name, count in res['sets'].items()])
-        print(f" > 套装: {set_desc}")
-        for art_str in res['artifact_strings']:
+
+def print_result_cli(data: Dict[str, Any]):
+    if not data: return
+    meta = data['meta']
+    print(f"\n=== {meta['target_char']} | {meta['skill_type']} ({meta['dmg_type']}) ===")
+
+    print("╔" + "═" * 75 + "╗")
+    for char_name, buff_list in data["logs"].items():
+        print(f"║   🔹 [{char_name}]: {', '.join(buff_list[:3])}...")
+    print("╚" + "═" * 75 + "╝")
+
+    for sol in data["solutions"]:
+        p = sol["panel"]
+        print(f"\n[方案 {sol['rank']}] 期望伤害: {sol['damage']:,.0f}")
+
+        # 🟢 展示具体的圣遗物属性
+        for art_str in sol.get("artifact_strings", []):
             print(art_str)
-        print("-" * 80)
 
+        if sol["dmg_type"] == "MoonBloom":
+            em = p.get('em', 0)
+            moon_curve = 1.0 + (6.0 * em) / (2000.0 + em)
+            moon_static = p.get('moon_dmg_bonus', 0.0)
+            print(
+                f"   面板: HP {p.get('hp', 0):.0f} | EM {em:.0f} | CR {p.get('crit_rate', 0):.1%} | CD {p.get('crit_dmg', 0.5):.1%}")
+            print(f"   月倍率区: BaseFlat {p.get('moon_base_flat', 0):.0f} | BasePct {p.get('moon_base_pct', 0):.1%}")
+            print(
+                f"   月增伤区: 曲线加成 {moon_curve:.2f}x | 静态月加成 {moon_static:+.1%} | 总增伤乘数 {moon_curve + moon_static:.2f}x")
+            print(f"   防御区: 强制无视防御 (100% Ignore)")
+        else:
+            # 🟢 修正：综合增伤统计（通用 + 元素 + 动作加成）
+            # p['all_damage_bonus'] 现在包含 1.0 基础 + 通用全加成（芙宁娜、万叶、套装等）
+            universal_bonus = p.get("all_damage_bonus", 1.0) - 1.0
+            elemental_bonus = p.get("elemental_bonus", 0.0)
 
+            # 匹配当前技能动作的加成键
+            st = meta['skill_type']
+            action_key = {
+                "NormalAttack": "normal_bonus", "ChargedAttack": "charged_bonus",
+                "ElementalSkill": "skill_bonus", "ElementalBurst": "burst_bonus"
+            }.get(st, "")
+            action_bonus = p.get(action_key, 0.0)
+
+            total_bonus = universal_bonus + elemental_bonus + action_bonus
+
+            print(
+                f"   面板: ATK {p.get('atk', 0):.0f} | HP {p.get('hp', 0):.0f} | CR {p.get('crit_rate', 0):.1%} | CD {p.get('crit_dmg', 0.5):.1%}")
+            print(
+                f"   增伤统计: 总计 {total_bonus:.1%} (通用 {universal_bonus:.1%} + 元素 {elemental_bonus:.1%} + 动作加成 {action_bonus:.1%})")
+            print(f"   套装: {sol['sets']}")
+
+        # 🟢 展示 Analyzer 收益报告
+        if sol.get("substat_priority"):
+            SubstatAnalyzer.print_report(sol["substat_priority"])
 if __name__ == "__main__":
-    # 使用修改后的数据进行测试
-    # 龙王重击 (Hydro, ChargedAttack)
-    # 队友：希诺宁(Geo, 减抗/增伤), 芙宁娜(Hydro, 巨额增伤), 万叶(Anemo, 增伤/减抗)
-    run_optimizer("龙王", ["希诺宁", "水神-芙宁娜", "万叶"], forced_set="", skill_type="ChargedAttack", reaction="")
+    # 示例 1: 龙王 (常规 ChargedAttack)
+    res_lw = run_optimizer("龙王", ["水神-芙宁娜", "万叶", "希诺宁"], skill_type="ChargedAttack")
+    print_result_cli(res_lw)
+
+    # 示例 2: 月神-少女 (MoonBloom)
+    # res_ys = run_optimizer("月神-少女", [ "草神", "白术"], skill_type="ChargedAttack")
+    # print_result_cli(res_ys)

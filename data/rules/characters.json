@@ -1,102 +1,591 @@
 {
-  "龙王": {
+  "月神-少女": {
     "base_stats": {
-      "elements": ["Hydro"],
-      "atk": 774.0, "hp": 15217.0, "def": 597.0,
-      "crit_rate": 0.05, "crit_dmg": 0.884, "em": 0.0,
+      "elements": [
+        "Hydro"
+      ],
+      "atk": 300.0,
+      "hp": 14695.0,
+      "def": 650.0,
+      "crit_rate": 0.242,
+      "crit_dmg": 0.5,
+      "em": 0.0,
       "energy_recharge_bonus": 0.0
     },
     "skills": {
       "NormalAttack": {
-        "default": { "multipliers": [], "element": "Hydro", "damage_type": "NormalAttack" }
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 8.5
+            }
+          ],
+          "element": "Hydro",
+          "damage_type": "NormalAttack"
+        }
       },
       "ChargedAttack": {
         "default": {
-          "multipliers": [{ "type": "hp_percent", "value": 28.048 }],
-          "element": "Hydro",
-          "damage_type": "ChargedAttack"
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 2.72
+            }
+          ],
+          "element": "Dendro",
+          "damage_type": "MoonBloom"
+        }
+      },
+      "PlungingAttack": {
+        "default": {
+          "multipliers": [],
+          "element": "Physical",
+          "damage_type": "ElementalSkill"
         }
       },
       "ElementalSkill": {
         "default": {
-          "multipliers": [{ "type": "hp_percent", "value": 23.16 }],
-          "element": "Hydro",
+          "multipliers": [],
+          "element": "Physical",
           "damage_type": "ElementalSkill"
         }
       },
       "ElementalBurst": {
         "default": {
-          "multipliers": [{ "type": "hp_percent", "value": 47.3 }],
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 45.0
+            }
+          ],
+          "element": "Hydro",
+          "damage_type": "MoonBloom"
+        }
+      }
+    },
+    "buffs": [
+      {
+        "type": "moon_base_pct",
+        "value": "min(0.07, hp * 0.002)",
+        "scope": "self",
+        "element": "null",
+        "note": null
+      },
+      {
+        "type": "ascension_mult",
+        "value": 0.0,
+        "scope": "self",
+        "element": "null",
+        "note": null
+      },
+      {
+        "type": "crit_rate",
+        "value": 0.15,
+        "scope": "self",
+        "element": "null",
+        "note": null
+      },
+      {
+        "type": "moon_dmg_bonus",
+        "value": 0.35,
+        "scope": "team",
+        "element": "null",
+        "note": null
+      },
+      {
+        "type": "moon_dmg_bonus",
+        "value": 0.4,
+        "scope": "team",
+        "element": "null",
+        "note": null
+      },
+      {
+        "type": "crit_dmg",
+        "value": 0.882,
+        "scope": "self",
+        "element": "",
+        "note": null
+      },
+      {
+        "type": "hp_percent",
+        "value": 0.2,
+        "scope": "self",
+        "element": "",
+        "note": null
+      }
+    ]
+  },
+  "拉乌玛": {
+    "base_stats": {
+      "elements": [
+        "Dendro"
+      ],
+      "atk": 500.0,
+      "hp": 14000.0,
+      "def": 750.0,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 1000.0
+    },
+    "skills": {
+      "ElementalSkill": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 180.0
+            }
+          ],
+          "element": "Dendro",
+          "damage_type": "ElementalSkill"
+        }
+      }
+    },
+    "buffs": [
+      {
+        "type": "crit_rate",
+        "value": 0.1,
+        "scope": "team",
+        "note": "天赋：全队暴击率提升"
+      },
+      {
+        "type": "crit_dmg",
+        "value": 0.2,
+        "scope": "team",
+        "note": "天赋：全队暴击伤害提升"
+      },
+      {
+        "type": "moon_base_pct",
+        "value": "min(0.14, em * 0.000175)",
+        "scope": "team",
+        "element": "null",
+        "note": "动态：EM的0.0175%转为月绽放倍率 (上限14%)"
+      },
+      {
+        "type": "moon_base_flat",
+        "value": "em * 4.0",
+        "scope": "team",
+        "element": "null",
+        "note": "动态：EM的400%转为月绽放基础伤害"
+      },
+      {
+        "type": "resistance_percent",
+        "value": 0.3,
+        "scope": "team",
+        "element": "null",
+        "note": "天赋：降低敌人30%抗性"
+      }
+    ]
+  },
+  "雷电将军": {
+    "base_stats": {
+      "elements": [
+        "Electro"
+      ],
+      "atk": 337.0,
+      "hp": 12907.0,
+      "def": 789.0,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 0.0,
+      "energy_recharge_bonus": 0.32
+    },
+    "skills": {
+      "ElementalBurst": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 721.0
+            }
+          ],
+          "element": "Electro",
+          "damage_type": "ElementalBurst"
+        }
+      }
+    },
+    "buffs": [
+      {
+        "type": "elemental_bonus",
+        "value": "max(0, (er - 1.0) * 0.4)",
+        "scope": "self",
+        "element": "Electro",
+        "note": "动态：充能转雷伤"
+      },
+      {
+        "type": "burst_bonus",
+        "value": "0.30",
+        "scope": "self",
+        "note": "E技能增伤"
+      }
+    ]
+  },
+  "龙王": {
+    "base_stats": {
+      "elements": [
+        "Hydro"
+      ],
+      "atk": 774.0,
+      "hp": 15217.0,
+      "def": 597.0,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.884,
+      "em": 0.0,
+      "energy_recharge_bonus": 0.0
+    },
+    "skills": {
+      "ChargedAttack": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 28.048
+            }
+          ],
+          "element": "Hydro",
+          "damage_type": "ChargedAttack"
+        }
+      },
+      "ElementalBurst": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 47.3
+            }
+          ],
           "element": "Hydro",
           "damage_type": "ElementalBurst"
         }
       }
     },
     "buffs": [
-      { "type": "crit_dmg", "value": 1.302, "scope": "self", "element": "null" },
-      { "type": "elemental_bonus", "value": 0.3, "scope": "self", "element": "null" },
-      { "type": "hp_percent", "value": 0.16, "scope": "self", "element": "null" },
-      { "type": "charged_bonus", "value": 0.42, "scope": "self", "element": "null" }
+      {
+        "type": "crit_dmg",
+        "value": 1.302,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "elemental_bonus",
+        "value": 0.3,
+        "scope": "self",
+        "element": "Hydro"
+      },
+      {
+        "type": "hp_percent",
+        "value": 0.16,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "charged_bonus",
+        "value": 0.42,
+        "scope": "self",
+        "element": "null"
+      }
     ]
   },
   "希诺宁": {
     "base_stats": {
-      "elements": ["Geo"],
-      "atk": 543, "hp": 12907, "def": 930,
-      "crit_rate": 0.05, "crit_dmg": 0.5, "em": 0
+      "elements": [
+        "Geo"
+      ],
+      "atk": 543.0,
+      "hp": 12907.0,
+      "def": 4384.0,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 0.0
     },
     "skills": {
-      "NormalAttack": {
-        "default": { "multipliers": [{"type": "atk_percent", "value": 0.5}], "element": "Physical", "damage_type": "NormalAttack" }
-      },
       "ElementalSkill": {
-        "default": { "multipliers": [{"type": "def_percent", "value": 0.5}], "element": "Geo", "damage_type": "ElementalSkill" }
+        "default": {
+          "multipliers": [
+            {
+              "type": "def_percent",
+              "value": 0.5
+            }
+          ],
+          "element": "Geo",
+          "damage_type": "ElementalSkill"
+        }
       }
     },
     "buffs": [
-      { "type": "damage_bonus", "value": 0.656, "scope": "team", "element": "null" },
-      { "type": "resistance_percent", "value": 0.45, "scope": "team", "element": "null" },
-      { "type": "base_multiplier_add", "value": 2728.0, "scope": "team", "element": "null" }
+      {
+        "type": "damage_bonus",
+        "value": 0.656,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "resistance_percent",
+        "value": 0.45,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "hp_percent",
+        "value": 0.45,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "atk_percent",
+        "value": 0.45,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "base_multiplier_add",
+        "value": "def * 0.65",
+        "scope": "team",
+        "element": "null",
+        "note": "动态：防御转基础值"
+      }
     ]
   },
   "水神-芙宁娜": {
     "base_stats": {
-      "elements": ["Hydro"],
-      "atk": 337, "hp": 15307, "def": 789,
-      "crit_rate": 0.242, "crit_dmg": 0.5, "em": 0
+      "elements": [
+        "Hydro"
+      ],
+      "atk": 337.0,
+      "hp": 15307.0,
+      "def": 789.0,
+      "crit_rate": 0.242,
+      "crit_dmg": 0.5,
+      "em": 0.0
     },
     "skills": {
       "ElementalSkill": {
-        "default": { "multipliers": [{"type": "hp_percent", "value": 5.46}], "element": "Hydro", "damage_type": "ElementalSkill" }
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 5.46
+            }
+          ],
+          "element": "Hydro",
+          "damage_type": "ElementalSkill"
+        }
       },
       "ElementalBurst": {
-        "default": { "multipliers": [{"type": "hp_percent", "value": 10.0}], "element": "Hydro", "damage_type": "ElementalBurst" }
+        "default": {
+          "multipliers": [
+            {
+              "type": "hp_percent",
+              "value": 10.0
+            }
+          ],
+          "element": "Hydro",
+          "damage_type": "ElementalBurst"
+        }
       }
     },
     "buffs": [
-      { "type": "damage_bonus", "value": 1.24, "scope": "team", "element": "null" },
-      { "type": "hp_percent", "value": 1.40, "scope": "self", "element": "null" },
-      { "type": "skill_bonus", "value": 0.28, "scope": "self", "element": "null" }
+      {
+        "type": "damage_bonus",
+        "value": 1.24,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "hp_percent",
+        "value": 1.4,
+        "scope": "self",
+        "element": "null"
+      },
+      {
+        "type": "skill_bonus",
+        "value": 0.28,
+        "scope": "self",
+        "element": "null"
+      }
     ]
   },
   "万叶": {
     "base_stats": {
-      "elements": ["Anemo"],
-      "atk": 774, "hp": 13348, "def": 789,
-      "crit_rate": 0.05, "crit_dmg": 0.5, "em": 115
+      "elements": [
+        "Anemo"
+      ],
+      "atk": 774.0,
+      "hp": 13348.0,
+      "def": 789.0,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 1000.0
     },
     "skills": {
       "NormalAttack": {
-        "default": { "multipliers": [{"type": "atk_percent", "value": 0.8}], "element": "Physical", "damage_type": "NormalAttack" }
-      },
-      "PlungingAttack": {
-        "default": { "multipliers": [{"type": "atk_percent", "value": 3.0}], "element": "Anemo", "damage_type": "PlungingAttack" }
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 0.8
+            }
+          ],
+          "element": "Physical",
+          "damage_type": "NormalAttack"
+        }
       }
     },
     "buffs": [
-      { "type": "damage_bonus", "value": 0.40, "scope": "team", "element": "null" },
-      { "type": "resistance_percent", "value": 0.40, "scope": "team", "element": "null" },
-      { "type": "em", "value": 200, "scope": "self", "element": "null" }
+      {
+        "type": "damage_bonus",
+        "value": "em * 0.0004",
+        "scope": "team",
+        "element": "null",
+        "note": "动态：精通转增伤"
+      },
+      {
+        "type": "damage_bonus",
+        "value": 0.16,
+        "scope": "team",
+        "element": "null"
+      },
+      {
+        "type": "resistance_percent",
+        "value": 0.4,
+        "scope": "team",
+        "element": "null"
+      }
+    ]
+  },
+  "草神": {
+    "base_stats": {
+      "elements": [
+        "Dendro"
+      ],
+      "atk": 299.0,
+      "hp": 10361.0,
+      "def": 630.0,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 115.0
+    },
+    "skills": {
+      "ElementalSkill": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 185.8
+            },
+            {
+              "type": "em",
+              "value": 371.5
+            }
+          ],
+          "element": "Dendro",
+          "damage_type": "ElementalSkill"
+        }
+      }
+    },
+    "buffs": [
+      {
+        "type": "em",
+        "value": 250.0,
+        "scope": "team",
+        "note": "天赋A1：开大后前台加精通"
+      },
+      {
+        "type": "def_reduction",
+        "value": 0.3,
+        "scope": "team",
+        "note": "命座C2：激化反应减防30%"
+      },
+      {
+        "type": "em",
+        "value": 40.0,
+        "scope": "team",
+        "note": "专武：千夜浮梦全队精通"
+      },
+      {
+        "type": "skill_bonus",
+        "value": "min(0.80, (em - 200) * 0.001)",
+        "scope": "self",
+        "note": "天赋A4：精通转E增伤 (动态)"
+      },
+      {
+        "type": "crit_rate",
+        "value": "min(0.24, (em - 200) * 0.0003)",
+        "scope": "self",
+        "note": "天赋A4：精通转E暴击 (动态)"
+      },
+      {
+        "type": "crit_rate",
+        "value": 0.1,
+        "scope": "team",
+        "note": "月绽放特化：额外暴击率"
+      },
+      {
+        "type": "crit_dmg",
+        "value": 0.2,
+        "scope": "team",
+        "note": "月绽放特化：额外暴击伤害"
+      },
+      {
+        "type": "resistance_percent",
+        "value": 0.3,
+        "scope": "team",
+        "element": "Dendro"
+      }
+    ]
+  },
+  "白术": {
+    "base_stats": {
+      "elements": [
+        "Dendro"
+      ],
+      "atk": 193.0,
+      "hp": 13348.0,
+      "def": 500.0,
+      "crit_rate": 0.05,
+      "crit_dmg": 0.5,
+      "em": 0.0
+    },
+    "skills": {
+      "ElementalBurst": {
+        "default": {
+          "multipliers": [
+            {
+              "type": "atk_percent",
+              "value": 175.0
+            }
+          ],
+          "element": "Dendro",
+          "damage_type": "ElementalBurst"
+        }
+      }
+    },
+    "buffs": [
+      {
+        "type": "spread",
+        "value": 0.4,
+        "scope": "team",
+        "note": "天赋：蔓激化系数加成"
+      },
+      {
+        "type": "aggravate",
+        "value": 0.4,
+        "scope": "team",
+        "note": "天赋：超激化系数加成"
+      },
+      {
+        "type": "moon_dmg_bonus",
+        "value": 0.55,
+        "scope": "team",
+        "note": "天赋：35% 月绽放增伤+纺月套效果"
+      },
+      {
+        "type": "em",
+        "value": 120.0,
+        "scope": "team",
+        "note": "纺月套"
+      }
     ]
   }
 }

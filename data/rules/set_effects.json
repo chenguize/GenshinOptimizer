@@ -1,58 +1,10 @@
 {
-  "长夜之誓": {
-    "2": [
-      {
-        "type": "em",
-        "value": 80,
-        "element": "null"
-      }
-    ],
-    "4": [
-      {
-        "note": "触发灵夜机制后提升攻击力或全元素增伤，需手动指定数值",
-        "element": "null"
-      }
-    ]
-  },
-  "深廊终曲": {
-    "2": [
-      {
-        "type": "atk_percent",
-        "value": 0.18,
-        "element": "null"
-      }
-    ],
-    "4": [
-      {
-        "type": "elemental_bonus",
-        "value": 0.0,
-        "note": "特定状态下获得增伤，数值随角色机制变化",
-        "element": "null"
-      }
-    ]
-  },
-  "烬城勇者绘卷": {
-    "2": [
-      {
-        "note": "能量回复机制，不直接参与伤害乘区",
-        "element": "null"
-      }
-    ],
-    "4": [
-      {
-        "type": "elemental_bonus",
-        "value": 0.4,
-        "note": "触发对应元素反应及夜魂状态后的最大全队加成",
-        "element": "null"
-      }
-    ]
-  },
-  "黑曜典藏": {
+  "黑曜秘典": {
     "2": [
       {
         "type": "damage_bonus",
         "value": 0.15,
-        "note": "夜魂加持状态下增伤",
+        "note": "夜魂加持状态下造成的伤害提升15%",
         "element": "null"
       }
     ],
@@ -60,7 +12,25 @@
       {
         "type": "crit_rate",
         "value": 0.4,
-        "note": "消耗夜魂值后提升暴击率",
+        "note": "消耗夜魂值后，暴击率提升40%",
+        "element": "null"
+      }
+    ]
+  },
+  "烬城勇者绘卷": {
+    "2": [
+      {
+        "type": "energy_recharge",
+        "value": 0.0,
+        "note": "机制回能，不计入面板",
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.4,
+        "note": "触发相关反应后，相关元素伤害加成提升 (默认满层 12%+28%)",
         "element": "null"
       }
     ]
@@ -77,7 +47,7 @@
       {
         "type": "damage_bonus",
         "value": 0.54,
-        "note": "生命之契数值变动叠满3层加成",
+        "note": "生命之契变动3层叠满 (18% * 3)",
         "element": "null"
       }
     ]
@@ -94,24 +64,46 @@
       {
         "type": "damage_bonus",
         "value": 0.5,
-        "note": "附近存在燃烧状态敌人时增伤",
+        "note": "脱战3秒后或燃烧状态下增伤",
         "element": "null"
       }
     ]
   },
-  "昔时之歌": {
+  "逐影猎人": {
     "2": [
       {
-        "type": "healing_bonus",
+        "type": "normal_bonus",
+        "value": 0.15,
+        "element": "null"
+      },
+      {
+        "type": "charged_bonus",
         "value": 0.15,
         "element": "null"
       }
     ],
     "4": [
       {
-        "type": "base_multiplier_add",
-        "value": 0,
-        "note": "基于治疗量的固定伤害加成，由于依赖治疗面板，暂设为0",
+        "type": "crit_rate",
+        "value": 0.36,
+        "note": "生命变动叠满3层 (12% * 3)",
+        "element": "null"
+      }
+    ]
+  },
+  "黄金剧团": {
+    "2": [
+      {
+        "type": "skill_bonus",
+        "value": 0.2,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "skill_bonus",
+        "value": 0.5,
+        "note": "战技增伤25% + 后台额外25% = 50%",
         "element": "null"
       }
     ]
@@ -128,12 +120,64 @@
       {
         "type": "elemental_bonus",
         "value": 0.5,
-        "element": "null",
-        "note": "结晶盾保护下岩伤提升效果最大值"
+        "note": "岩伤20% * 结晶盾加成2.5倍 = 50%",
+        "element": "Geo"
       }
     ]
   },
-  "流浪大地的乐团": {
+  "昔时之歌": {
+    "2": [
+      {
+        "type": "healing_bonus",
+        "value": 0.15,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "base_multiplier_add",
+        "value": 1200,
+        "note": "基于治疗量转化基础伤害，上限1200",
+        "element": "null"
+      }
+    ]
+  },
+  "绝缘之旗印": {
+    "2": [
+      {
+        "type": "energy_recharge",
+        "value": 0.2,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "burst_bonus",
+        "value": "min(0.75, er * 0.25)",
+        "note": "基于充能效率提升大招伤害，至多75%",
+        "element": "null"
+      }
+    ]
+  },
+  "深林的记忆": {
+    "2": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "element": "Dendro"
+      }
+    ],
+    "4": [
+      {
+        "type": "resistance_percent",
+        "value": -0.3,
+        "scope": "enemy",
+        "element": "Dendro",
+        "note": "降低敌人30%草抗"
+      }
+    ]
+  },
+  "饰金之梦": {
     "2": [
       {
         "type": "em",
@@ -143,10 +187,276 @@
     ],
     "4": [
       {
-        "type": "skill_bonus",
-        "value": 0.35,
-        "note": "仅加成弓、法器角色的重击伤害",
+        "type": "atk_percent",
+        "value": 0.14,
+        "note": "默认1同色队友(14%攻击)",
         "element": "null"
+      },
+      {
+        "type": "em",
+        "value": 100,
+        "note": "默认2异色队友(100精通)",
+        "element": "null"
+      }
+    ]
+  },
+  "沙上楼阁史话": {
+    "2": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "element": "Anemo"
+      }
+    ],
+    "4": [
+      {
+        "type": "normal_bonus",
+        "value": 0.4,
+        "element": "null"
+      },
+      {
+        "type": "charged_bonus",
+        "value": 0.4,
+        "element": "null"
+      },
+      {
+        "type": "plunging_bonus",
+        "value": 0.4,
+        "element": "null"
+      }
+    ]
+  },
+  "水仙之梦": {
+    "2": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "element": "Hydro"
+      }
+    ],
+    "4": [
+      {
+        "type": "atk_percent",
+        "value": 0.25,
+        "note": "3层效果",
+        "element": "null"
+      },
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "note": "3层效果",
+        "element": "Hydro"
+      }
+    ]
+  },
+  "花海甘露之光": {
+    "2": [
+      {
+        "type": "hp_percent",
+        "value": 0.2,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "skill_bonus",
+        "value": 0.5,
+        "note": "满层效果",
+        "element": "null"
+      },
+      {
+        "type": "burst_bonus",
+        "value": 0.5,
+        "element": "null"
+      }
+    ]
+  },
+  "辰砂往生录": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "atk_percent",
+        "value": 0.48,
+        "note": "开大后满层效果 (8% + 10%*4)",
+        "element": "null"
+      }
+    ]
+  },
+  "来歆余响": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "base_multiplier_add",
+        "value": "atk * 0.35",
+        "note": "普攻概率触发倍率，取期望值 35%",
+        "element": "null"
+      }
+    ]
+  },
+  "冰风迷途的勇士": {
+    "2": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "element": "Cryo"
+      }
+    ],
+    "4": [
+      {
+        "type": "crit_rate",
+        "value": 0.4,
+        "note": "攻击冻结敌人",
+        "element": "null"
+      }
+    ]
+  },
+  "沉沦之心": {
+    "2": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "element": "Hydro"
+      }
+    ],
+    "4": [
+      {
+        "type": "normal_bonus",
+        "value": 0.3,
+        "element": "null"
+      },
+      {
+        "type": "charged_bonus",
+        "value": 0.3,
+        "element": "null"
+      }
+    ]
+  },
+  "炽烈的炎之魔女": {
+    "2": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "element": "Pyro"
+      }
+    ],
+    "4": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.225,
+        "note": "3层战技叠满 (2件套效果 150% = 额外22.5%)",
+        "element": "Pyro"
+      },
+      {
+        "type": "vaporize",
+        "value": 0.15,
+        "element": "null"
+      },
+      {
+        "type": "melt",
+        "value": 0.15,
+        "element": "null"
+      }
+    ]
+  },
+  "如雷的盛怒": {
+    "2": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "element": "Electro"
+      }
+    ],
+    "4": [
+      {
+        "type": "aggravate",
+        "value": 0.2,
+        "element": "null"
+      }
+    ]
+  },
+  "翠绿之影": {
+    "2": [
+      {
+        "type": "elemental_bonus",
+        "value": 0.15,
+        "element": "Anemo"
+      }
+    ],
+    "4": [
+      {
+        "type": "resistance_percent",
+        "value": -0.4,
+        "scope": "enemy",
+        "note": "扩散减抗 (需保证扩散对应元素)",
+        "element": "null"
+      }
+    ]
+  },
+  "昔日宗室之仪": {
+    "2": [
+      {
+        "type": "burst_bonus",
+        "value": 0.2,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "atk_percent",
+        "value": 0.2,
+        "scope": "team",
+        "element": "null"
+      }
+    ]
+  },
+  "千岩牢固": {
+    "2": [
+      {
+        "type": "hp_percent",
+        "value": 0.2,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "atk_percent",
+        "value": 0.2,
+        "scope": "team",
+        "element": "null"
+      }
+    ]
+  },
+  "苍白之火": {
+    "2": [
+      {
+        "type": "physical_bonus",
+        "value": 0.25,
+        "element": "Physical"
+      }
+    ],
+    "4": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
+        "element": "null"
+      },
+      {
+        "type": "physical_bonus",
+        "value": 0.25,
+        "note": "叠满2层效果翻倍",
+        "element": "Physical"
       }
     ]
   },
@@ -160,14 +470,56 @@
     ],
     "4": [
       {
-        "type": "skill_bonus",
+        "type": "normal_bonus",
         "value": 0.5,
-        "note": "普攻、重击、下落攻击伤害提升",
+        "element": "null"
+      },
+      {
+        "type": "charged_bonus",
+        "value": 0.5,
+        "element": "null"
+      },
+      {
+        "type": "plunging_bonus",
+        "value": 0.5,
         "element": "null"
       }
     ]
   },
-  "教官": {
+  "海染砗磲": {
+    "2": [
+      {
+        "type": "healing_bonus",
+        "value": 0.15,
+        "element": "null"
+      }
+    ],
+    "4": []
+  },
+  "华馆梦醒形骸记": {
+    "2": [
+      {
+        "type": "def_percent",
+        "value": 0.3,
+        "element": "null"
+      }
+    ],
+    "4": [
+      {
+        "type": "def_percent",
+        "value": 0.24,
+        "note": "满层问答 (6% * 4)",
+        "element": "null"
+      },
+      {
+        "type": "elemental_bonus",
+        "value": 0.24,
+        "note": "满层问答 (6% * 4)",
+        "element": "Geo"
+      }
+    ]
+  },
+  "流浪大地的乐团": {
     "2": [
       {
         "type": "em",
@@ -177,122 +529,54 @@
     ],
     "4": [
       {
-        "type": "em",
-        "value": 120,
-        "note": "触发元素反应后全队精通加成",
-        "element": "null"
-      }
-    ]
-  },
-  "纺月的夜歌": {
-    "2": [
-      {
-        "type": "def_percent",
-        "value": 0.2,
-        "element": "null"
-      }
-    ],
-    "4": [
-      {
-        "note": "5.2新套装，机制涉及重击伤害加成与元素类型判定，暂不硬编码具体值",
-        "element": "null"
-      }
-    ]
-  },
-  "穹境示显之夜": {
-    "2": [
-      {
-        "type": "atk_percent",
-        "value": 0.18,
-        "element": "null"
-      }
-    ],
-    "4": [
-      {
-        "note": "5.2新套装，机制较为复杂，留空",
-        "element": "null"
-      }
-    ]
-  },
-  "逐影猎人": {
-    "2": [
-      {
-        "type": "attack_bonus",
-        "value": 0.15,
-        "element": "null"
-      },
-      {
         "type": "charged_bonus",
-        "value": 0.15,
+        "value": 0.35,
+        "element": "null"
+      }
+    ]
+  },
+  "角斗士的终幕礼": {
+    "2": [
+      {
+        "type": "atk_percent",
+        "value": 0.18,
         "element": "null"
       }
     ],
     "4": [
       {
-        "type": "crit_rate",
-        "value": 0.36,
+        "type": "normal_bonus",
+        "value": 0.35,
         "element": "null"
       }
     ]
   },
-  "昔日宗室之仪": {
+  "测试虚拟套装": {
     "2": [
       {
-        "type": "atk_percent",
-        "value": 0.18,
-        "element": "null"
+        "type": "em",
+        "value": 80.0
       }
     ],
-    "4": []
+    "4": [
+      {
+        "type": "moon_dmg_bonus",
+        "value": "min(0.8, em * 0.001)"
+      }
+    ]
   },
-  "千岩牢固": {
+  "TEST_MOON_SET": {
     "2": [
       {
-        "type": "atk_percent",
-        "value": 0.18,
-        "element": "null"
+        "type": "em",
+        "value": 80.0
       }
     ],
-    "4": []
-  },
-  "辰砂往生录": {
-    "2": [
+    "4": [
       {
-        "type": "atk_percent",
-        "value": 0.18,
-        "element": "null"
+        "type": "moon_dmg_bonus",
+        "value": "min(0.8, em * 0.001)"
       }
-    ],
-    "4": []
-  },
-  "黄金剧团": {
-    "2": [
-      {
-        "type": "atk_percent",
-        "value": 0.18,
-        "element": "null"
-      }
-    ],
-    "4": []
-  },
-  "冰风迷途的勇士": {
-    "2": [
-      {
-        "type": "atk_percent",
-        "value": 0.18,
-        "element": "null"
-      }
-    ],
-    "4": []
-  },
-  "乐园遗落之花": {
-    "2": [
-      {
-        "type": "atk_percent",
-        "value": 0.18,
-        "element": "null"
-      }
-    ],
-    "4": []
+    ]
   }
 }
